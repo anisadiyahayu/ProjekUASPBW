@@ -116,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </p>
                 </div>
             </form>
-            <div class="mt-8 text-center"><p class="text-xs text-muted-foreground">© 2024 Universitas Singaperbangsa Karawang. All rights reserved.</p></div>
+            <div class="mt-8 text-center"><p class="text-xs text-muted-foreground">© 2026 Universitas Singaperbangsa Karawang.</p></div>
         </div>
     </div>
     <script>
