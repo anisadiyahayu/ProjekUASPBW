@@ -13,7 +13,7 @@
         <div class="col-md-6">
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-white py-3 border-bottom-0">
-                    <h4 class="mb-0 text-primary fw-bold">📍 Tambah Lokasi Baru</h4>
+                    <h4 class="mb-0 text-primary fw-bold">Tambah Lokasi Baru</h4>
                 </div>
                 <div class="card-body p-4">
                     <form action="proses_tambah.php" method="POST">
