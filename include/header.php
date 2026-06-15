@@ -102,7 +102,7 @@ $current_dir = basename(dirname($_SERVER['PHP_SELF']));
                     </li>
 
                     <li>
-                        <a href="../data_user/index.php" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all 
+                        <a href="../manajemen_user/index.php" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all 
                             <?= ($current_dir == 'data_user' || $current_dir == 'manajemen_user') ? 'bg-activeMenu text-white shadow-md' : 'text-blue-100 hover:bg-white/10 hover:text-white' ?>">
                             <i data-feather="users" class="w-5 h-5"></i> <span>Data User</span>
                         </a>

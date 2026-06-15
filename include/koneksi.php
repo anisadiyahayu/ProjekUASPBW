@@ -1,7 +1,7 @@
 <?php
 $host = "localhost";
 $user = "root";
-$pass = "";
+$pass = "root";
 $db   = "db_inventaris_lab";
 
 $conn = new mysqli($host, $user, $pass, $db);
