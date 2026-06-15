@@ -3,7 +3,6 @@ require_once '../auth/role_check.php';
 require_once '../include/koneksi.php';
 require_once '../include/header.php';
 
-// Fitur Filter & Search
 $search = $_GET['search'] ?? '';
 $role = $_GET['role'] ?? 'all';
 

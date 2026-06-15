@@ -13,7 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // Mencari user berdasarkan NPM / Username
     $stmt = $conn->prepare("SELECT * FROM users WHERE npm = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
@@ -25,7 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($status_akun !== 'Aktif') {
             $error = 'Akun Anda nonaktif.';
         } else {
-            // Mendukung password teks biasa '123' atau password_verify jika sudah di-hash
             if ($password === $row['password'] || password_verify($password, $row['password'])) {
                 $_SESSION['user_id'] = $row['id'];
                 $_SESSION['npm']     = $row['npm'];
@@ -61,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         sans: ['Poppins', 'sans-serif'],
                     },
                     colors: { 
-                        primary: '#1e3b8a', // Diubah menjadi warna figma pilihanmu
+                        primary: '#1e3b8a', 
                         card: '#ffffff', 
                         foreground: '#1e293b', 
                         muted: '#f1f5f9', 

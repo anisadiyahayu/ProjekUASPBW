@@ -10,15 +10,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $kelas = $_POST['kelas'];
     $angkatan = $_POST['angkatan'];
 
-    $avatar_path = $_SESSION['avatar']; // Default lama
+    $avatar_path = $_SESSION['avatar']; 
     
-    // Handle File Upload
     if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] == 0) {
         $allowed = ['jpg', 'jpeg', 'png'];
         $ext = pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION);
         
         if (in_array(strtolower($ext), $allowed)) {
-            // Pastikan Anda membuat folder "uploads" di root jika belum ada
             if (!is_dir('../uploads')) mkdir('../uploads', 0777, true);
             
             $new_filename = 'uploads/avatar_' . $id . '_' . time() . '.' . $ext;

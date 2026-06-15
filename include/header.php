@@ -20,9 +20,9 @@ $current_dir = basename(dirname($_SERVER['PHP_SELF']));
                         sans: ['Poppins', 'sans-serif'],
                     },
                     colors: {
-                        primary: '#1e3b8a',         // Navy gelap (Header & Sidebar)
-                        accentBtn: '#3b82f6',       // Biru cerah (Menu Aktif)
-                        background: '#f4f6f9',      // Latar belakang halaman konten
+                        primary: '#1e3b8a',         
+                        accentBtn: '#3b82f6',       
+                        background: '#f4f6f9',      
                         card: '#ffffff',
                         foreground: '#1e293b',
                         muted: '#f8fafc',

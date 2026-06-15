@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $kelas = $_POST['kelas'];
     $angkatan = $_POST['angkatan'];
     $no_hp = $_POST['no_hp'];
-    $password = password_hash('123456', PASSWORD_DEFAULT); // Default password
+    $password = password_hash('123456', PASSWORD_DEFAULT);
 
     $stmt = $conn->prepare("INSERT INTO users (id, npm, nama, password, role, kelas, angkatan, no_hp) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("ssssssis", $id, $npm, $nama, $password, $role, $kelas, $angkatan, $no_hp);
