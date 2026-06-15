@@ -6,7 +6,7 @@ $id = $_POST['id'];
 $nama = $_POST['nama'];
 $deskripsi = $_POST['deskripsi'];
 
-mysqli_query($koneksi,"
+mysqli_query($conn,"
 UPDATE categories
 SET
 nama='$nama',

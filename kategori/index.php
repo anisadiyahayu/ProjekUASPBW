@@ -3,7 +3,8 @@ include "koneksi.php";
 
 include "../include/header.php";
 
-$query = mysqli_query($koneksi,"
+
+$query = mysqli_query($conn,"
 SELECT
 c.*,
 COUNT(i.id) AS jumlah_barang
@@ -19,6 +20,8 @@ ORDER BY c.nama ASC
 <head>
     <title>Kategori Barang</title>
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 
 <body class="bg-slate-100">
@@ -38,15 +41,15 @@ ORDER BY c.nama ASC
         </div>
 
         <a href="tambah.php"
-           class="bg-blue-600 text-white px-4 py-2 rounded-lg">
+            class="btn-primary">
             + Tambah Kategori
         </a>
 
     </div>
 
-    <div class="bg-white rounded-xl shadow overflow-hidden">
+    <div class="card overflow-hidden">
 
-        <table class="w-full">
+        <table class="table-modern">
 
             <thead class="bg-gray-100">
 

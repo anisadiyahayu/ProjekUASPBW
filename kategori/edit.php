@@ -6,7 +6,7 @@ include "../include/header.php";
 $id = $_GET['id'];
 
 $query = mysqli_query(
-    $koneksi,
+    $conn,
     "SELECT * FROM categories WHERE id='$id'"
 );
 

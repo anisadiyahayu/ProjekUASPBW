@@ -1,12 +1,13 @@
 <?php
 
 include "koneksi.php";
+include "../include/header.php";
 
 $id = $_POST['id'];
 $nama = $_POST['nama'];
 $deskripsi = $_POST['deskripsi'];
 
-mysqli_query($koneksi,"
+mysqli_query($conn,"
 INSERT INTO categories
 (
 id,
