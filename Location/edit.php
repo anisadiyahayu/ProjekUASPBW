@@ -1,7 +1,7 @@
 <?php
 // edit.php
 require_once 'koneksi.php';
-
+include "../include/header.php";
 // Cek apakah parameter ID tersedia di URL
 if (isset($_GET['id'])) {
     // Keamanan: Mencegah SQL Injection pada metode GET
