@@ -18,7 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute();
     $user = $stmt->get_result()->fetch_assoc();
 
-    // Validasi baik plaintext maupun yang sudah di-hash
     if ($old === $user['password'] || password_verify($old, $user['password'])) {
         $hashed_new = password_hash($new, PASSWORD_DEFAULT);
         

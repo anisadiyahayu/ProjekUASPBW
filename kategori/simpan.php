@@ -1,13 +1,14 @@
 <?php
 
-include("../koneksi.php");
+include "koneksi.php";
+include "../include/header.php";
 
 $id = $_POST['id'];
 $nama = $_POST['nama'];
 $deskripsi = $_POST['deskripsi'];
 
 mysqli_query(
-    $conn,
+    $koneksi,
     "INSERT INTO categories
     (id,nama,deskripsi)
     VALUES
@@ -15,3 +16,4 @@ mysqli_query(
 );
 
 header("Location:index.php");
+exit;

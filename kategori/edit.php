@@ -1,39 +1,76 @@
 <?php
 
-include("../koneksi.php");
+include "koneksi.php";
+include "../include/header.php";
 
 $id = $_GET['id'];
 
 $data = mysqli_query(
-    $conn,
+    $koneksi,
     "SELECT * FROM categories WHERE id='$id'"
 );
 
-$row = mysqli_fetch_assoc($data);
+$data = mysqli_fetch_assoc($query);
 
 ?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Kategori</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-100">
+
+<div class="max-w-xl mx-auto mt-10">
+
+<div class="bg-white rounded-xl shadow p-6">
+
+<h2 class="text-2xl font-bold mb-6">
+    Edit Kategori
+</h2>
 
 <form action="update.php" method="POST">
 
 <input type="hidden"
-name="id"
-value="<?= $row['id']; ?>">
+       name="id"
+       value="<?= $data['id']; ?>">
 
-Nama
+<div class="mb-4">
+
+<label>Nama Kategori</label>
+
 <input type="text"
-name="nama"
-value="<?= $row['nama']; ?>">
+       name="nama"
+       value="<?= $data['nama']; ?>"
+       class="w-full border p-2 rounded-lg">
 
-<br><br>
+</div>
 
-Deskripsi
+<div class="mb-4">
 
-<textarea name="deskripsi"><?= $row['deskripsi']; ?></textarea>
+<label>Deskripsi</label>
 
-<br><br>
+<textarea
+name="deskripsi"
+class="w-full border p-2 rounded-lg"><?= $data['deskripsi']; ?></textarea>
 
-<button type="submit">
-Update
+</div>
+
+<button class="bg-blue-600 text-white px-4 py-2 rounded-lg">
+    Update
 </button>
 
+<a href="index.php"
+   class="bg-gray-500 text-white px-4 py-2 rounded-lg">
+    Kembali
+</a>
+
 </form>
+
+</div>
+</div>
+
+</body>
+</html>

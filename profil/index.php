@@ -77,7 +77,7 @@ $msg = $_GET['msg'] ?? '';
 
     <div class="bg-card rounded-xl shadow-md border p-6">
         <h3 class="font-semibold text-lg mb-4">Ubah Password</h3>
-        <form action="change_password.php" method="POST" class="space-y-4 max-w-lg">
+        <form action="change_pw.php" method="POST" class="space-y-4 max-w-lg">
             <div>
                 <label class="block text-sm font-medium mb-2">Password Lama</label>
                 <input type="password" name="old_pass" required class="w-full px-4 py-2 border rounded-lg focus:ring-2">
