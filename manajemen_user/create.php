@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <div class="flex gap-3 pt-4">
                 <a href="index.php" class="flex-1 text-center px-4 py-2 border rounded-lg hover:bg-muted">Batal</a>
-                <button type="submit" class="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700">Simpan</button>
+                <button type="submit" class="flex-1 px-4 py-2 text-center rounded-lg hover:bg-blue-700">Simpan</button>
             </div>
         </form>
     </div>
