@@ -1,12 +1,12 @@
 <?php
 $host = "localhost";
 $user = "root";
-$pass = "";
-$db   = "db_pengajuan_permintaan_barang";
+$pass = "root";
+$db   = "db_inventaris_lab";
 
-$koneksi = mysqli_connect($host, $user, $pass, $db);
+$conn = new mysqli($host, $user, $pass, $db);
 
-if (!$koneksi) {
-    die("Koneksi database gagal: " . mysqli_connect_error());
+if ($conn->connect_error) {
+    die("Koneksi gagal: " . $conn->connect_error);
 }
 ?>
