@@ -1,10 +1,16 @@
 <?php
-include("../koneksi.php");
+include "koneksi.php";
+include "../include/header.php";
 
-$data = mysqli_query(
-    $conn,
-    "SELECT * FROM categories"
-);
+$query = mysqli_query($conn,"
+SELECT
+    c.*,
+    COUNT(i.id) AS jumlah_barang
+FROM categories c
+LEFT JOIN items i ON c.id = i.id_kategori
+GROUP BY c.id
+ORDER BY c.nama ASC
+");
 ?>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -165,8 +171,6 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
             </button>
 
         </div>
-
-        <form action="update.php" method="POST">
 
             <input type="hidden" name="id" id="edit_id">
 
