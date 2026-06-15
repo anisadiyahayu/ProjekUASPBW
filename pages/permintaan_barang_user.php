@@ -1,39 +1,10 @@
+<?php 
+
+   
+
+?>
 <html>
-
 <head>
-    <style id="reset-css">
-        @layer figreset, figoverridable, reset, theme, base, figutils, components, utilities;
-
-        @layer figoverridable {
-            :root {
-                font-synthesis: none
-            }
-        }
-
-        @layer figutils {
-            :root {
-                --banner-height: 48px;
-                --banner-height-v2: 40px;
-                --full-height-with-banner: calc(100dvh - var(--banner-height))
-            }
-
-            @media (max-width:600px) {
-                .banner-v2-container {
-                    left: 0 !important;
-                    right: 0 !important;
-                    margin: 0 auto !important
-                }
-            }
-
-            .wrapper-with-banner .min-h-screen {
-                min-height: var(--full-height-with-banner)
-            }
-
-            .wrapper-with-banner .h-screen {
-                height: var(--full-height-with-banner)
-            }
-        }
-    </style>
     <meta name="color-scheme" content="light dark">
     <style>
         html,
@@ -48,123 +19,6 @@
 </head>
 
 <body>
-    <script>
-        window.coreMessagePort = null
-        window.messagePort = null
-
-        const allowedOrigins = [
-            'https://figma-gov.com',
-            'https://www.figma.com',
-            'https://staging.figma.com',
-            'https://devenv01.figma.engineering',
-            'https://local.figma.engineering:8443',
-            'http://localhost:9000',
-        ]
-
-        const allowedOriginPatterns = [
-            /^https:\/\/[a-z0-9-]+\.figdev\.systems:8443$/,
-            /^https:\/\/[a-z0-9-]+\.figdev\.systems$/,
-        ]
-
-        function isAllowedOrigin(origin) {
-            return allowedOrigins.includes(origin) || allowedOriginPatterns.some(p => p.test(origin))
-        }
-
-        let messageId = 0
-
-        window.addEventListener('message', (e) => {
-            function sendMessage(method, data) {
-                if (window.coreMessagePort) {
-                    window.coreMessagePort.postMessage({
-                        method: 'status',
-                        args: data,
-                        messageId: 0
-                    })
-                    messageId++
-                }
-            }
-
-            if (isAllowedOrigin(e.origin)) {
-                if (e.data.type === 'iframe-init') {
-                    window.coreMessagePort = e.ports[0]
-                    window.messagePort = e.ports[1]
-
-                    window.__PREVIEW_IFRAME_INITIAL_OPTIONS__ = e.data.previewIframeInitialOptions
-
-                    sendMessage('status', {
-                        state: 'init-received',
-                        isReady: false
-                    })
-
-                    if (e.data.initScriptBlob) {
-                        import(URL.createObjectURL(e.data.initScriptBlob))
-                    } else {
-                        const script = document.createElement('script')
-
-                        script.onload = async () => {
-                            function sendReady() {
-                                sendMessage('status', {
-                                    state: 'ready',
-                                    isReady: true
-                                })
-                            }
-
-                            if (window.__iframeScriptExecuted__) {
-                                sendReady()
-                                return
-                            }
-
-                            let executeInterval = null
-                            let timeout = null
-
-                            const timeoutPromise = new Promise((resolve) => {
-                                timeout = setTimeout(() => resolve('timeout'), 2000)
-                            })
-
-                            const scriptExecutedPromise = new Promise((resolve) => {
-                                executeInterval = setInterval(() => {
-                                    if (window.__iframeScriptExecuted__) {
-                                        resolve('ready')
-                                    }
-                                }, 50)
-                            })
-
-                            const result = await Promise.race([timeoutPromise, scriptExecutedPromise])
-
-                            clearTimeout(timeout)
-                            clearInterval(executeInterval)
-
-                            if (result === 'ready') {
-                                sendReady()
-                            } else {
-                                sendMessage('status', {
-                                    state: 'script-timeout',
-                                    isReady: false
-                                })
-                            }
-                        }
-
-                        script.onerror = (e) => {
-                            sendMessage('status', {
-                                state: 'script-load-error',
-                                isReady: false,
-                                error: e.message
-                            })
-                        }
-
-                        script.src = e.data.initScriptURL
-                        // https://sentry.io/answers/script-error/
-                        script.crossOrigin = 'anonymous'
-                        document.body.appendChild(script)
-                    }
-                }
-            }
-        })
-    </script>
-
-
-
-    <script src="https://www.figma.com/webpack-artifacts/assets/code_components_preview_iframe-6fc448adff96db0a.min.js.br" crossorigin="anonymous"></script>
     <div class="min-h-screen bg-background">
         <aside id="sidebar" class="fixed top-0 left-0 h-full bg-sidebar text-sidebar-foreground transition-all duration-300 z-40 w-64">
             <div class="flex flex-col h-full">
