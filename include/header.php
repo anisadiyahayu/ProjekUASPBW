@@ -87,8 +87,8 @@ $current_dir = basename(dirname($_SERVER['PHP_SELF']));
                     </li>
 
                     <li>
-                        <a href="../kategori_barang/index.php" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all 
-                            <?= ($current_dir == 'kategori_barang') ? 'bg-activeMenu text-white shadow-md' : 'text-blue-100 hover:bg-white/10 hover:text-white' ?>">
+                        <a href="../kategori/index.php" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all 
+                            <?= ($current_dir == 'kategori') ? 'bg-activeMenu text-white shadow-md' : 'text-blue-100 hover:bg-white/10 hover:text-white' ?>">
                             <i data-feather="layers" class="w-5 h-5"></i> <span>Kategori Barang</span>
                         </a>
                     </li>
