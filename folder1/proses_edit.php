@@ -4,12 +4,12 @@ require_once 'koneksi.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Keamanan: Mencegah SQL Injection dengan real_escape_string
-    $id          = $conn->real_escape_string($_POST['id']);
-    $nama_lokasi = $conn->real_escape_string($_POST['nama_lokasi']);
-    $deskripsi   = $conn->real_escape_string($_POST['deskripsi']);
+    $id         = $conn->real_escape_string($_POST['id']);
+    $nama       = $conn->real_escape_string($_POST['nama']);
+    $keterangan = $conn->real_escape_string($_POST['keterangan']);
 
     // Query Update Data
-    $query = "UPDATE lokasi_barang SET nama_lokasi = '$nama_lokasi', deskripsi = '$deskripsi' WHERE id = '$id'";
+    $query = "UPDATE locations SET nama = '$nama', keterangan = '$keterangan' WHERE id = '$id'";
 
     if ($conn->query($query) === TRUE) {
         // Redirect ke index jika sukses

@@ -15,14 +15,14 @@
         
         <form action="proses_tambah.php" method="POST">
             <div class="mb-4">
-                <label for="nama_lokasi" class="block text-gray-700 font-bold mb-2">Nama Lokasi</label>
-                <input type="text" id="nama_lokasi" name="nama_lokasi" required placeholder="Contoh: Lemari Kaca 01" 
+                <label for="nama" class="block text-gray-700 font-bold mb-2">Nama Lokasi</label>
+                <input type="text" id="nama" name="nama" required placeholder="Contoh: Lemari Kaca 01" 
                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
             
             <div class="mb-6">
-                <label for="deskripsi" class="block text-gray-700 font-bold mb-2">Deskripsi Lokasi</label>
-                <textarea id="deskripsi" name="deskripsi" rows="4" required placeholder="Contoh: Lokasi untuk alat-alat gelas kimia"
+                <label for="keterangan" class="block text-gray-700 font-bold mb-2">Deskripsi Lokasi</label>
+                <textarea id="keterangan" name="keterangan" rows="4" required placeholder="Contoh: Lokasi untuk alat-alat gelas kimia"
                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
             </div>
             

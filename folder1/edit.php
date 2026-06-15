@@ -8,7 +8,7 @@ if (isset($_GET['id'])) {
     $id = $conn->real_escape_string($_GET['id']);
     
     // Mengambil data berdasarkan id
-    $query = "SELECT * FROM lokasi_barang WHERE id = '$id'";
+    $query = "SELECT * FROM locations WHERE id = '$id'";
     $result = $conn->query($query);
 
     if ($result->num_rows > 0) {
@@ -38,15 +38,15 @@ if (isset($_GET['id'])) {
             <input type="hidden" name="id" value="<?= htmlspecialchars($row['id']); ?>">
 
             <div class="mb-4">
-                <label for="nama_lokasi" class="block text-gray-700 font-bold mb-2">Nama Lokasi</label>
-                <input type="text" id="nama_lokasi" name="nama_lokasi" required value="<?= htmlspecialchars($row['nama_lokasi']); ?>"
+                <label for="nama" class="block text-gray-700 font-bold mb-2">Nama Lokasi</label>
+                <input type="text" id="nama" name="nama" required value="<?= htmlspecialchars($row['nama']); ?>"
                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
             
             <div class="mb-6">
-                <label for="deskripsi" class="block text-gray-700 font-bold mb-2">Deskripsi Lokasi</label>
-                <textarea id="deskripsi" name="deskripsi" rows="4" required
-                          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"><?= htmlspecialchars($row['deskripsi']); ?></textarea>
+                <label for="keterangan" class="block text-gray-700 font-bold mb-2">Deskripsi Lokasi</label>
+                <textarea id="keterangan" name="keterangan" rows="4" required
+                          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"><?= htmlspecialchars($row['keterangan']); ?></textarea>
             </div>
             
             <div class="flex items-center justify-end">

@@ -3,12 +3,21 @@
 require_once 'koneksi.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Membuat UUID v4 secara acak untuk kolom ID (karena tabel menggunakan tipe varchar, bukan auto-increment)
+    $id = sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+        mt_rand(0, 0xffff), mt_rand(0, 0xffff),
+        mt_rand(0, 0xffff),
+        mt_rand(0, 0x0fff) | 0x4000,
+        mt_rand(0, 0x3fff) | 0x8000,
+        mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
+    );
+
     // Keamanan: Mencegah SQL Injection dengan real_escape_string
-    $nama_lokasi = $conn->real_escape_string($_POST['nama_lokasi']);
-    $deskripsi   = $conn->real_escape_string($_POST['deskripsi']);
+    $nama       = $conn->real_escape_string($_POST['nama']);
+    $keterangan = $conn->real_escape_string($_POST['keterangan']);
 
     // Query Insert Data
-    $query = "INSERT INTO lokasi_barang (nama_lokasi, deskripsi) VALUES ('$nama_lokasi', '$deskripsi')";
+    $query = "INSERT INTO locations (id, nama, keterangan) VALUES ('$id', '$nama', '$keterangan')";
 
     if ($conn->query($query) === TRUE) {
         // Redirect ke index jika sukses

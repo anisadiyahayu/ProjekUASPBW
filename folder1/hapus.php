@@ -8,7 +8,7 @@ if (isset($_GET['id'])) {
     $id = $conn->real_escape_string($_GET['id']);
 
     // Query Delete Data
-    $query = "DELETE FROM lokasi_barang WHERE id = '$id'";
+    $query = "DELETE FROM locations WHERE id = '$id'";
 
     if ($conn->query($query) === TRUE) {
         // Redirect ke index jika sukses

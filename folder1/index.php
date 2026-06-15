@@ -2,8 +2,8 @@
 // index.php
 require_once 'koneksi.php';
 
-// Mengambil data dari tabel lokasi_barang diurutkan dari yang terbaru
-$query = "SELECT * FROM lokasi_barang ORDER BY created_at DESC";
+// Mengambil data dari tabel locations diurutkan dari yang terbaru
+$query = "SELECT * FROM locations ORDER BY created_at DESC";
 $result = $conn->query($query);
 ?>
 <!DOCTYPE html>
@@ -54,8 +54,8 @@ $result = $conn->query($query);
                     ?>
                             <tr class="hover:bg-gray-50">
                                 <td class="py-3 px-4 border-b"><?= $no++; ?></td>
-                                <td class="py-3 px-4 border-b font-medium"><?= htmlspecialchars($row['nama_lokasi']); ?></td>
-                                <td class="py-3 px-4 border-b"><?= htmlspecialchars($row['deskripsi']); ?></td>
+                                <td class="py-3 px-4 border-b font-medium"><?= htmlspecialchars($row['nama']); ?></td>
+                                <td class="py-3 px-4 border-b"><?= htmlspecialchars($row['keterangan']); ?></td>
                                 <td class="py-3 px-4 border-b"><?= htmlspecialchars($row['created_at']); ?></td>
                                 <td class="py-3 px-4 border-b text-center">
                                     <a href="edit.php?id=<?= $row['id']; ?>" class="bg-yellow-500 hover:bg-yellow-600 text-white text-sm py-1 px-3 rounded mr-1">Edit</a>
