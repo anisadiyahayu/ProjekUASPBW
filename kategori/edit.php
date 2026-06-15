@@ -5,7 +5,7 @@ include("../koneksi.php");
 $id = $_GET['id'];
 
 $data = mysqli_query(
-    $koneksi,
+    $conn,
     "SELECT * FROM categories WHERE id='$id'"
 );
 

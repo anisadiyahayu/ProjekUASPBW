@@ -7,7 +7,7 @@ $nama = $_POST['nama'];
 $deskripsi = $_POST['deskripsi'];
 
 mysqli_query(
-    $koneksi,
+    $conn,
     "INSERT INTO categories
     (id,nama,deskripsi)
     VALUES
