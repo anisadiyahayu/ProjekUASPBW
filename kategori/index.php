@@ -2,7 +2,7 @@
 include("../koneksi.php");
 
 $data = mysqli_query(
-    $koneksi,
+    $conn,
     "SELECT * FROM categories"
 );
 ?>
