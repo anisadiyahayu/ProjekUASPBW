@@ -1,6 +1,8 @@
 <?php
 include "koneksi.php";
 
+include "../include/header.php";
+
 $query = mysqli_query($koneksi,"
 SELECT
 c.*,

@@ -1,6 +1,7 @@
 <?php
 
 include "koneksi.php";
+include "../include/header.php";
 
 $id = $_GET['id'];
 
