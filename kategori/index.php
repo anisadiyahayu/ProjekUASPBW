@@ -1,16 +1,10 @@
 <?php
-include "koneksi.php";
-include "../include/header.php";
+include("../koneksi.php");
 
-$query = mysqli_query($conn,"
-SELECT
-    c.*,
-    COUNT(i.id) AS jumlah_barang
-FROM categories c
-LEFT JOIN items i ON c.id = i.id_kategori
-GROUP BY c.id
-ORDER BY c.nama ASC
-");
+$data = mysqli_query(
+    $conn,
+    "SELECT * FROM categories"
+);
 ?>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
