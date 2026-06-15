@@ -1,22 +1,25 @@
 <?php
 // hapus.php
-include 'koneksi.php';
+require_once 'koneksi.php';
 
-if(isset($_GET['id'])) {
-    // Mengamankan parameter GET
+// Cek apakah parameter ID tersedia di URL
+if (isset($_GET['id'])) {
+    // Keamanan: Mencegah SQL Injection
     $id = $conn->real_escape_string($_GET['id']);
-    
-    // Query untuk menghapus data lokasi berdasarkan ID
-    $query = "DELETE FROM locations WHERE id='$id'";
-    
+
+    // Query Delete Data
+    $query = "DELETE FROM lokasi_barang WHERE id = '$id'";
+
     if ($conn->query($query) === TRUE) {
-        echo "<script>alert('Lokasi berhasil dihapus!'); window.location.href='index.php';</script>";
+        // Redirect ke index jika sukses
+        header("Location: index.php?pesan=hapus_sukses");
+        exit();
     } else {
         echo "Error menghapus data: " . $conn->error;
     }
 } else {
+    // Redirect jika tidak ada id yang diberikan
     header("Location: index.php");
+    exit();
 }
-
-$conn->close();
 ?>

@@ -1,22 +1,26 @@
 <?php
 // proses_edit.php
-include 'koneksi.php';
+require_once 'koneksi.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Mengamankan input dari form untuk mencegah SQL Injection
-    $id = $conn->real_escape_string($_POST['id']);
-    $nama = $conn->real_escape_string($_POST['nama']);
-    $keterangan = $conn->real_escape_string($_POST['keterangan']);
+    // Keamanan: Mencegah SQL Injection dengan real_escape_string
+    $id          = $conn->real_escape_string($_POST['id']);
+    $nama_lokasi = $conn->real_escape_string($_POST['nama_lokasi']);
+    $deskripsi   = $conn->real_escape_string($_POST['deskripsi']);
 
-    // Query untuk update data
-    $query = "UPDATE locations SET nama='$nama', keterangan='$keterangan' WHERE id='$id'";
+    // Query Update Data
+    $query = "UPDATE lokasi_barang SET nama_lokasi = '$nama_lokasi', deskripsi = '$deskripsi' WHERE id = '$id'";
 
     if ($conn->query($query) === TRUE) {
-        echo "<script>alert('Data lokasi berhasil diperbarui!'); window.location.href='index.php';</script>";
+        // Redirect ke index jika sukses
+        header("Location: index.php?pesan=edit_sukses");
+        exit();
     } else {
         echo "Error: " . $query . "<br>" . $conn->error;
     }
+} else {
+    // Redirect jika file ini diakses langsung
+    header("Location: index.php");
+    exit();
 }
-
-$conn->close();
 ?>

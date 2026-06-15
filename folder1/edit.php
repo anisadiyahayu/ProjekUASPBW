@@ -1,20 +1,24 @@
 <?php
 // edit.php
-include 'koneksi.php';
+require_once 'koneksi.php';
 
-if(!isset($_GET['id'])) {
+// Cek apakah parameter ID tersedia di URL
+if (isset($_GET['id'])) {
+    // Keamanan: Mencegah SQL Injection pada metode GET
+    $id = $conn->real_escape_string($_GET['id']);
+    
+    // Mengambil data berdasarkan id
+    $query = "SELECT * FROM lokasi_barang WHERE id = '$id'";
+    $result = $conn->query($query);
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+    } else {
+        die("Data lokasi tidak ditemukan.");
+    }
+} else {
     header("Location: index.php");
-    exit;
-}
-
-// Mencegah SQL Injection pada parameter GET
-$id = $conn->real_escape_string($_GET['id']);
-$query = $conn->query("SELECT * FROM locations WHERE id='$id'");
-$data = $query->fetch_assoc();
-
-if(!$data) {
-    echo "<script>alert('Data lokasi tidak ditemukan!'); window.location.href='index.php';</script>";
-    exit;
+    exit();
 }
 ?>
 <!DOCTYPE html>
@@ -22,41 +26,36 @@ if(!$data) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Lokasi</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Edit Lokasi Barang</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-light">
+<body class="bg-gray-100 p-8">
+    <div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">Edit Lokasi Barang</h2>
+        
+        <form action="proses_edit.php" method="POST">
+            <!-- Hidden input untuk ID yang akan diubah -->
+            <input type="hidden" name="id" value="<?= htmlspecialchars($row['id']); ?>">
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-sm border-0">
-                <div class="card-header bg-white py-3 border-bottom-0">
-                    <h4 class="mb-0 text-primary fw-bold">Ubah Data Lokasi</h4>
-                </div>
-                <div class="card-body p-4">
-                    <form action="proses_edit.php" method="POST">
-                        <input type="hidden" name="id" value="<?= htmlspecialchars($data['id']) ?>">
-                        
-                        <div class="mb-4">
-                            <label class="form-label fw-bold text-secondary small text-uppercase">Nama Lokasi</label>
-                            <input type="text" name="nama" class="form-control form-control-lg bg-light" value="<?= htmlspecialchars($data['nama']) ?>" required>
-                        </div>
-                        <div class="mb-4">
-                            <label class="form-label fw-bold text-secondary small text-uppercase">Keterangan Letak / Posisi</label>
-                            <textarea name="keterangan" class="form-control bg-light" rows="4"><?= htmlspecialchars($data['keterangan']) ?></textarea>
-                        </div>
-                        <div class="d-flex gap-3 pt-2">
-                            <a href="index.php" class="btn btn-outline-secondary btn-lg w-25">Batal</a>
-                            <button type="submit" class="btn btn-primary btn-lg flex-grow-1 fw-bold">Simpan Perubahan</button>
-                        </div>
-                    </form>
-                </div>
+            <div class="mb-4">
+                <label for="nama_lokasi" class="block text-gray-700 font-bold mb-2">Nama Lokasi</label>
+                <input type="text" id="nama_lokasi" name="nama_lokasi" required value="<?= htmlspecialchars($row['nama_lokasi']); ?>"
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
-        </div>
+            
+            <div class="mb-6">
+                <label for="deskripsi" class="block text-gray-700 font-bold mb-2">Deskripsi Lokasi</label>
+                <textarea id="deskripsi" name="deskripsi" rows="4" required
+                          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"><?= htmlspecialchars($row['deskripsi']); ?></textarea>
+            </div>
+            
+            <div class="flex items-center justify-end">
+                <a href="index.php" class="text-gray-500 hover:text-gray-700 font-medium mr-4">Batal</a>
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">
+                    Simpan Perubahan
+                </button>
+            </div>
+        </form>
     </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
