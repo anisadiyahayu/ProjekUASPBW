@@ -2,6 +2,7 @@
 session_start();
 include '../koneksi.php';
 include 'fungsi_stok.php';
+include "../include/header.php";
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../login.php");
