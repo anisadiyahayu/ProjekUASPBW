@@ -1,4 +1,5 @@
 <?php
+require_once '../auth/role_check.php';
 require_once '../include/koneksi.php';
 require_once '../include/header.php';
 

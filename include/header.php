@@ -58,12 +58,14 @@ $current_dir = basename(dirname($_SERVER['PHP_SELF']));
                             <i data-feather="grid" class="w-4 h-4"></i> <span>Dashboard</span>
                         </a>
                     </li>
+                    <?php if ($_SESSION['role'] === 'Admin'): ?>
                     <li>
                         <a href="../manajemen_user/index.php" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all 
                             <?= ($current_dir == 'manajemen_user') ? 'bg-accentBtn text-white shadow-md shadow-blue-500/30' : 'text-blue-100/70 hover:bg-white/10 hover:text-white' ?>">
                             <i data-feather="users" class="w-4 h-4"></i> <span>Data User</span>
                         </a>
                     </li>
+                    <?php endif; ?>
                     <li>
                         <a href="../profil/index.php" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all 
                             <?= ($current_dir == 'profil') ? 'bg-accentBtn text-white shadow-md shadow-blue-500/30' : 'text-blue-100/70 hover:bg-white/10 hover:text-white' ?>">

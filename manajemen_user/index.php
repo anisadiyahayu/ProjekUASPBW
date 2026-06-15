@@ -1,4 +1,5 @@
 <?php
+require_once '../auth/role_check.php';
 require_once '../include/koneksi.php';
 require_once '../include/header.php';
 
@@ -58,6 +59,7 @@ $users = $stmt->get_result();
                         <th class="px-6 py-4 text-left text-sm font-semibold">NPM/NIDN</th>
                         <th class="px-6 py-4 text-left text-sm font-semibold">Role</th>
                         <th class="px-6 py-4 text-left text-sm font-semibold">Kelas</th>
+                        <th class="px-6 py-4 text-left text-sm font-semibold">Angkatan</th>
                         <th class="px-6 py-4 text-left text-sm font-semibold">No HP</th>
                         <th class="px-6 py-4 text-left text-sm font-semibold">Aksi</th>
                     </tr>
@@ -79,14 +81,19 @@ $users = $stmt->get_result();
                             ?>
                         </td>
                         <td class="px-6 py-4 text-sm text-muted-foreground"><?= htmlspecialchars($u['kelas'] ?? '') ?></td>
+                        <td class="px-6 py-4 text-sm text-muted-foreground"><?= htmlspecialchars($u['angkatan'] ?? '') ?></td>
                         <td class="px-6 py-4 text-sm text-muted-foreground"><?= htmlspecialchars($u['no_hp'] ?? '') ?></td>
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-2">
-                                <a href="edit.php?id=<?= $u['id'] ?>" class="p-2 text-green-600 hover:bg-green-50 rounded-lg"><i data-feather="edit-2" class="w-4 h-4"></i></a>
-                                <?php if($u['id'] !== $_SESSION['user_id']): ?>
-                                <a href="delete.php?id=<?= $u['id'] ?>" onclick="return confirm('Yakin hapus user ini?')" class="p-2 text-red-600 hover:bg-red-50 rounded-lg"><i data-feather="trash-2" class="w-4 h-4"></i></a>
-                                <?php endif; ?>
-                            </div>
+                        <td class="px-6 py-4 text-center">
+                        <div class="flex items-center justify-center gap-3">
+                            <a href="edit.php?id=<?= $u['id'] ?>" class="text-green-500 hover:text-green-700 transition-colors">
+                                <i data-feather="edit" class="w-4 h-4"></i>
+                            </a>
+                            <a href="delete.php?id=<?= $u['id'] ?>" 
+                            class="text-red-500 hover:text-red-700 transition-colors" 
+                            onclick="return confirm('Apakah Anda yakin ingin menghapus pengguna <?= htmlspecialchars($u['nama']) ?>?')">
+                                <i data-feather="trash-2" class="w-4 h-4"></i>
+                            </a>
+                        </div>
                         </td>
                     </tr>
                     <?php endwhile; ?>
