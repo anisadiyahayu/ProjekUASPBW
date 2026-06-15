@@ -3,7 +3,11 @@ session_start();
 
 $user_role = $_SESSION['role'] ?? '';
 if ($user_role != 'Admin' && $user_role != 'Aslab') {
+<<<<<<< HEAD
     die("Akses ditolak! Anda tidak memiliki wewenang eksekusi hapus data.");
+=======
+    die("Akses ditolak");
+>>>>>>> d5dfb3b94c97b836b25cb28515f0b3816a86bcea
 }
 
 include '../koneksi.php';
