@@ -96,7 +96,7 @@ $current_dir = basename(dirname($_SERVER['PHP_SELF']));
                     <li>
                         <!-- Anda bisa menyesuaikan nama folder "lokasi_penyimpanan" sesuai nama folder XAMPP Anda -->
                         <a href="../Location/index.php" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all 
-                            <?= ($current_dir == 'lokasi_penyimpanan' || $current_dir == 'folder1') ? 'bg-activeMenu text-white shadow-md' : 'text-blue-100 hover:bg-white/10 hover:text-white' ?>">
+                            <?= ($current_dir == 'Location') ? 'bg-activeMenu text-white shadow-md' : 'text-blue-100 hover:bg-white/10 hover:text-white' ?>">
                             <i data-feather="map-pin" class="w-5 h-5"></i> <span>Lokasi Penyimpanan</span>
                         </a>
                     </li>
