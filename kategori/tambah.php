@@ -1,28 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Tambah Kategori</title>
-</head>
-<body>
+<?php
 
-<h2>Tambah Kategori</h2>
+include "koneksi.php";
 
-<form action="simpan.php" method="POST">
+$nama = $_POST['nama'];
+$deskripsi = $_POST['deskripsi'];
 
-ID Kategori <br>
-<input type="text" name="id"><br><br>
+mysqli_query(
+    $conn,
+    "INSERT INTO categories(nama,deskripsi)
+     VALUES('$nama','$deskripsi')"
+);
 
-Nama Kategori <br>
-<input type="text" name="nama"><br><br>
-
-Deskripsi <br>
-<textarea name="deskripsi"></textarea><br><br>
-
-<button type="submit">
-    Simpan
-</button>
-
-</form>
-
-</body>
-</html>
+header("Location: index.php");
+exit;

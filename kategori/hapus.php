@@ -1,11 +1,11 @@
 <?php
 
-include("../koneksi.php");
+include "koneksi.php";
 
 $id = $_GET['id'];
 
 mysqli_query(
-    $koneksi,
+    $conn,
     "DELETE FROM categories
     WHERE id='$id'"
 );
