@@ -32,7 +32,7 @@ $users = $stmt->get_result();
 <body>
     <div class="min-h-screen bg-background">
         <?php $current_page = 'manajemen_user'; ?>
-        <?php if ($_SESSION['role'] === 'Admin') {
+        <?php if ($_SESSION['role'] === 'Admin' || $_SESSION['role'] === 'Aslab') {
             include __DIR__ . '/../template/sidebar_admin.php';
         } else {
             include __DIR__ . '/../template/sidebar.php';

@@ -1,6 +1,7 @@
 <?php
 // proses_tambah.php
-require_once 'koneksi.php';
+require_once '../auth/role_check.php';
+require_once '../include/koneksi.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Membuat UUID v4 secara acak untuk kolom ID (karena tabel menggunakan tipe varchar, bukan auto-increment)
