@@ -1,5 +1,5 @@
 <?php
-include "koneksi.php";
+include "../include/koneksi.php";
 include "../include/header.php";
 
 $query = mysqli_query($conn,"
