@@ -73,8 +73,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="text" name="no_hp" value="<?= htmlspecialchars($user['no_hp']) ?>" class="w-full px-4 py-2 border rounded-lg">
             </div>
             <div class="flex gap-3 pt-4">
-                <a href="index.php" class="flex-1 text-center px-4 py-2 border rounded-lg hover:bg-muted">Batal</a>
-                <button type="submit" class="flex-1 px-4 py-2 bg-primary text-primary-foreground rounded-lg">Simpan</button>
+                <a href="index.php" class="flex-1 text-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-muted">Batal</a>
+                <button type="submit" class="flex-1 px-4 py-2 text-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-blue-700">Simpan</button>
             </div>
         </form>
     </div>
