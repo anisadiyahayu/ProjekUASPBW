@@ -172,6 +172,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
         </div>
 
+        <form action="update.php" method="POST">
+
             <input type="hidden" name="id" id="edit_id">
 
             <div class="p-6 space-y-4">
