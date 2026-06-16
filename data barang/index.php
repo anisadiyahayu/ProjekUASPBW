@@ -2,13 +2,19 @@
 require_once '../auth/role_check.php';
 require_once '../include/koneksi.php';
 
-// 1. LOGIKA DATABASE & FILTER DIJALANKAN LEBIH DULU
+// =====================================================================
+// AUTO-REPAIR DATABASE (MENGATASI ERROR INPUT MANUAL PHPMYADMIN)
+// Jika ada Kategori / Lokasi yang ID-nya kosong, otomatis perbaiki!
+// =====================================================================
+$conn->query("UPDATE categories SET id = UUID() WHERE id = '' OR id IS NULL");
+$conn->query("UPDATE locations SET id = UUID() WHERE id = '' OR id IS NULL");
+
+// 1. LOGIKA DATABASE & FILTER
 $search   = $_GET['search'] ?? '';
 $kategori = $_GET['kategori'] ?? '';
 $lokasi   = $_GET['lokasi'] ?? '';
 $kondisi  = $_GET['kondisi'] ?? '';
 
-// Query data barang dengan JOIN yang kuat
 $query = "SELECT i.id, i.kode, i.nama, i.stok, i.satuan, i.kondisi, i.keterangan, i.id_kategori, i.id_lokasi,
                  COALESCE(c.nama, '-') as nama_kategori, 
                  COALESCE(l.nama, '-') as nama_lokasi 
@@ -49,7 +55,7 @@ if (!empty($params)) {
 $stmt->execute();
 $items = $stmt->get_result();
 
-// Mengambil data Master Kategori & Lokasi ke Array (Aman untuk Looping berulang)
+// Mengambil data Kategori & Lokasi ke Array
 $kategori_data = [];
 $q_kat = $conn->query("SELECT id, nama FROM categories ORDER BY nama ASC");
 if ($q_kat) {
@@ -62,12 +68,11 @@ if ($q_lok) {
     while($row = $q_lok->fetch_assoc()) $lokasi_data[] = $row;
 }
 
-// 2. PANGGIL HEADER (Sidebar & Topbar) SETELAH LOGIKA SELESAI
+// 2. PANGGIL HEADER
 require_once '../include/header.php'; 
 ?>
 
 <div class="space-y-6 max-w-full mx-auto">
-    <!-- Header Page -->
     <div class="flex items-center justify-between">
         <div>
             <h1 class="text-2xl font-bold text-slate-800">Data Barang Laboratorium</h1>
@@ -148,8 +153,12 @@ require_once '../include/header.php';
                     <tr class="hover:bg-slate-50 transition-colors">
                         <td class="px-6 py-4 text-slate-600 font-medium"><?= htmlspecialchars($i['kode']) ?></td>
                         <td class="px-6 py-4 font-semibold text-slate-800"><?= htmlspecialchars($i['nama']) ?></td>
-                        <td class="px-6 py-4 text-slate-600"><?= htmlspecialchars($i['nama_kategori']) ?></td>
-                        <td class="px-6 py-4 text-slate-500 text-xs"><?= htmlspecialchars($i['nama_lokasi']) ?></td>
+                        <td class="px-6 py-4 <?= $i['nama_kategori'] == '-' ? 'text-red-500 font-bold' : 'text-slate-600' ?>">
+                            <?= htmlspecialchars($i['nama_kategori']) ?>
+                        </td>
+                        <td class="px-6 py-4 <?= $i['nama_lokasi'] == '-' ? 'text-red-500 font-bold' : 'text-slate-500' ?> text-xs">
+                            <?= htmlspecialchars($i['nama_lokasi']) ?>
+                        </td>
                         <td class="px-6 py-4 font-bold text-slate-800 text-center"><?= htmlspecialchars($i['stok']) ?></td>
                         <td class="px-6 py-4 text-slate-600"><?= htmlspecialchars($i['satuan']) ?></td>
                         <td class="px-6 py-4 text-slate-600"><?= htmlspecialchars($kondisi_text) ?></td>
@@ -205,9 +214,9 @@ require_once '../include/header.php';
             <div class="grid grid-cols-2 gap-5 mb-5">
                 <div>
                     <label class="block text-sm font-semibold text-slate-700 mb-2">Kategori <span class="text-red-500">*</span></label>
-                    <!-- PERHATIKAN DISINI: name="id_kategori" MENGIRIM DATA YG BENAR KE PHP -->
+                    <!-- Menggunakan value="NONE" untuk membedakan dengan ID kosong -->
                     <select name="id_kategori" required class="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-500/20 outline-none text-sm bg-white">
-                        <option value="" disabled selected>-- Pilih Kategori --</option>
+                        <option value="NONE" disabled selected>-- Pilih Kategori --</option>
                         <?php foreach($kategori_data as $k): ?>
                             <option value="<?= htmlspecialchars($k['id']) ?>"><?= htmlspecialchars($k['nama']) ?></option>
                         <?php endforeach; ?>
@@ -216,7 +225,7 @@ require_once '../include/header.php';
                 <div>
                     <label class="block text-sm font-semibold text-slate-700 mb-2">Lokasi <span class="text-red-500">*</span></label>
                     <select name="id_lokasi" required class="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-500/20 outline-none text-sm bg-white">
-                        <option value="" disabled selected>-- Pilih Lokasi --</option>
+                        <option value="NONE" disabled selected>-- Pilih Lokasi --</option>
                         <?php foreach($lokasi_data as $l): ?>
                             <option value="<?= htmlspecialchars($l['id']) ?>"><?= htmlspecialchars($l['nama']) ?></option>
                         <?php endforeach; ?>
@@ -277,7 +286,7 @@ require_once '../include/header.php';
                 <div>
                     <label class="block text-sm font-semibold text-slate-700 mb-2">Kategori <span class="text-red-500">*</span></label>
                     <select name="id_kategori" id="edit_kategori" required class="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-500/20 outline-none text-sm bg-white">
-                        <option value="">-- Pilih Kategori --</option>
+                        <option value="NONE" disabled>-- Pilih Kategori --</option>
                         <?php foreach($kategori_data as $k): ?>
                             <option value="<?= htmlspecialchars($k['id']) ?>"><?= htmlspecialchars($k['nama']) ?></option>
                         <?php endforeach; ?>
@@ -286,7 +295,7 @@ require_once '../include/header.php';
                 <div>
                     <label class="block text-sm font-semibold text-slate-700 mb-2">Lokasi <span class="text-red-500">*</span></label>
                     <select name="id_lokasi" id="edit_lokasi" required class="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-500/20 outline-none text-sm bg-white">
-                        <option value="">-- Pilih Lokasi --</option>
+                        <option value="NONE" disabled>-- Pilih Lokasi --</option>
                         <?php foreach($lokasi_data as $l): ?>
                             <option value="<?= htmlspecialchars($l['id']) ?>"><?= htmlspecialchars($l['nama']) ?></option>
                         <?php endforeach; ?>
@@ -412,8 +421,8 @@ require_once '../include/header.php';
         document.getElementById('edit_id').value = data.id;
         document.getElementById('edit_kode').value = data.kode;
         document.getElementById('edit_nama').value = data.nama;
-        document.getElementById('edit_kategori').value = data.id_kategori || '';
-        document.getElementById('edit_lokasi').value = data.id_lokasi || '';
+        document.getElementById('edit_kategori').value = data.id_kategori || 'NONE';
+        document.getElementById('edit_lokasi').value = data.id_lokasi || 'NONE';
         document.getElementById('edit_stok').value = data.stok;
         document.getElementById('edit_satuan').value = data.satuan;
         document.getElementById('edit_kondisi').value = data.kondisi;
@@ -457,5 +466,4 @@ require_once '../include/header.php';
     }
 </script>
 
-<!-- 4. PANGGIL FOOTER -->
 <?php require_once '../include/footer.php'; ?>
