@@ -1,7 +1,7 @@
 <?php
 
-include "koneksi.php";
-include "../include/header.php";
+require_once '../auth/auth_check.php';
+include "../include/koneksi.php";
 
 $id = $_POST['id'];
 $nama = $_POST['nama'];

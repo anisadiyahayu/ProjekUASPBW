@@ -1,7 +1,6 @@
 <?php
 require_once '../auth/role_check.php';
 require_once '../include/koneksi.php';
-require_once '../include/header.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = uniqid('user_');
@@ -70,4 +69,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
     </div>
 </div>
-<?php require_once '../include/footer.php'; ?>

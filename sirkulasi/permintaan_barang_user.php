@@ -1,7 +1,19 @@
 <?php 
+require_once '../auth/auth_check.php';
+include "../include/koneksi.php";
 
-   
-
+// Query untuk mengambil data transaksi digabung dengan data user dan item
+$query = mysqli_query($conn, "
+    SELECT 
+        transactions.*, 
+        users.nama AS nama_peminjam, 
+        users.npm AS npm_peminjam, 
+        items.nama AS nama_barang 
+    FROM transactions
+    LEFT JOIN users ON transactions.id_user = users.id
+    LEFT JOIN items ON transactions.id_item = items.id
+    ORDER BY transactions.waktu_pinjam DESC
+");
 ?>
 <html>
 <head>
@@ -14,13 +26,15 @@
             height: 100%;
         }
     </style>
-    <link rel="stylesheet" href="/include/style_permintaan.css">
+    <link rel="stylesheet" href="/include/style_tailwind.css">
     <link rel="stylesheet" href="/include/style_sidebar.css">
 </head>
 
 <body>
     <div class="min-h-screen bg-background">
-        <?php include __DIR__ . '/../template/sidebar.php'; ?>
+        <?php $current_page = 'permintaan'; ?>
+        <?php if($_SESSION['role'] === 'Admin') { include __DIR__ . '/../template/sidebar_admin.php'; 
+        } else { include __DIR__ . '/../template/sidebar.php';} ?>
         <div id="main-content" class="transition-all duration-300 ml-64">
             <?php include __DIR__ . '/../template/header.php'; ?>
             <main class="p-6">
@@ -53,144 +67,82 @@
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-border">
-                                    <tr class="hover:bg-muted/30 transition-colors">
-                                        <td class="px-6 py-4">
-                                            <div>
-                                                <p class="font-medium text-foreground">Anisa Diyah Ayu Lestari</p>
-                                                <p class="text-sm text-muted-foreground">2110631170001</p>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 text-sm text-foreground">Arduino Uno R3</td>
-                                        <td class="px-6 py-4 text-sm font-semibold text-foreground">2</td>
-                                        <td class="px-6 py-4 text-sm text-muted-foreground">Tugas Akhir</td>
-                                        <td class="px-6 py-4 text-sm text-muted-foreground">2024-05-28</td>
-                                        <td class="px-6 py-4 text-sm text-muted-foreground">2024-06-10</td>
-                                        <td class="px-6 py-4"><span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock w-3 h-3">
-                                                    <circle cx="12" cy="12" r="10"></circle>
-                                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                                </svg> Menunggu</span></td>
-                                        <td class="px-6 py-4">
-                                            <div class="flex items-center gap-2"><button class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Detail"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye w-4 h-4">
-                                                        <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path>
-                                                        <circle cx="12" cy="12" r="3"></circle>
-                                                    </svg></button><button class="px-3 py-1 text-sm bg-green-50 text-green-600 hover:bg-green-100 rounded-lg transition-colors">Validasi</button></div>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-muted/30 transition-colors">
-                                        <td class="px-6 py-4">
-                                            <div>
-                                                <p class="font-medium text-foreground">Halvina Farras Savitri</p>
-                                                <p class="text-sm text-muted-foreground">2110631170002</p>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 text-sm text-foreground">RFID RC522</td>
-                                        <td class="px-6 py-4 text-sm font-semibold text-foreground">3</td>
-                                        <td class="px-6 py-4 text-sm text-muted-foreground">Penelitian</td>
-                                        <td class="px-6 py-4 text-sm text-muted-foreground">2024-05-27</td>
-                                        <td class="px-6 py-4 text-sm text-muted-foreground">2024-06-05</td>
-                                        <td class="px-6 py-4"><span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big w-3 h-3">
-                                                    <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
-                                                    <path d="m9 11 3 3L22 4"></path>
-                                                </svg> Disetujui</span></td>
-                                        <td class="px-6 py-4">
-                                            <div class="flex items-center gap-2"><button class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Detail"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye w-4 h-4">
-                                                        <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path>
-                                                        <circle cx="12" cy="12" r="3"></circle>
-                                                    </svg></button></div>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-muted/30 transition-colors">
-                                        <td class="px-6 py-4">
-                                            <div>
-                                                <p class="font-medium text-foreground">Rifqy Kurniawan Fattahillah</p>
-                                                <p class="text-sm text-muted-foreground">2110631170003</p>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 text-sm text-foreground">Mikrotik RB750Gr3</td>
-                                        <td class="px-6 py-4 text-sm font-semibold text-foreground">1</td>
-                                        <td class="px-6 py-4 text-sm text-muted-foreground">Praktikum Jaringan</td>
-                                        <td class="px-6 py-4 text-sm text-muted-foreground">2024-05-29</td>
-                                        <td class="px-6 py-4 text-sm text-muted-foreground">2024-05-29</td>
-                                        <td class="px-6 py-4"><span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock w-3 h-3">
-                                                    <circle cx="12" cy="12" r="10"></circle>
-                                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                                </svg> Menunggu</span></td>
-                                        <td class="px-6 py-4">
-                                            <div class="flex items-center gap-2"><button class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Detail"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye w-4 h-4">
-                                                        <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path>
-                                                        <circle cx="12" cy="12" r="3"></circle>
-                                                    </svg></button><button class="px-3 py-1 text-sm bg-green-50 text-green-600 hover:bg-green-100 rounded-lg transition-colors">Validasi</button></div>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-muted/30 transition-colors">
-                                        <td class="px-6 py-4">
-                                            <div>
-                                                <p class="font-medium text-foreground">Hazel Muhammad Naufal Ribawa</p>
-                                                <p class="text-sm text-muted-foreground">2110631170004</p>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 text-sm text-foreground">ESP32 DevKit</td>
-                                        <td class="px-6 py-4 text-sm font-semibold text-foreground">2</td>
-                                        <td class="px-6 py-4 text-sm text-muted-foreground">Praktikum IoT</td>
-                                        <td class="px-6 py-4 text-sm text-muted-foreground">2024-05-26</td>
-                                        <td class="px-6 py-4 text-sm text-muted-foreground">2024-05-26</td>
-                                        <td class="px-6 py-4"><span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">Selesai</span></td>
-                                        <td class="px-6 py-4">
-                                            <div class="flex items-center gap-2"><button class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Detail"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye w-4 h-4">
-                                                        <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path>
-                                                        <circle cx="12" cy="12" r="3"></circle>
-                                                    </svg></button></div>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-muted/30 transition-colors">
-                                        <td class="px-6 py-4">
-                                            <div>
-                                                <p class="font-medium text-foreground">Regina Inryanti Simanjuntak</p>
-                                                <p class="text-sm text-muted-foreground">2110631170005</p>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 text-sm text-foreground">Turbidity Sensor</td>
-                                        <td class="px-6 py-4 text-sm font-semibold text-foreground">1</td>
-                                        <td class="px-6 py-4 text-sm text-muted-foreground">Tugas Akhir</td>
-                                        <td class="px-6 py-4 text-sm text-muted-foreground">2024-05-25</td>
-                                        <td class="px-6 py-4 text-sm text-muted-foreground">2024-06-15</td>
-                                        <td class="px-6 py-4"><span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-x w-3 h-3">
-                                                    <circle cx="12" cy="12" r="10"></circle>
-                                                    <path d="m15 9-6 6"></path>
-                                                    <path d="m9 9 6 6"></path>
-                                                </svg> Ditolak</span></td>
-                                        <td class="px-6 py-4">
-                                            <div class="flex items-center gap-2"><button class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Detail"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye w-4 h-4">
-                                                        <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path>
-                                                        <circle cx="12" cy="12" r="3"></circle>
-                                                    </svg></button></div>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-muted/30 transition-colors">
-                                        <td class="px-6 py-4">
-                                            <div>
-                                                <p class="font-medium text-foreground">Anisa Diyah Ayu Lestari</p>
-                                                <p class="text-sm text-muted-foreground">2110631170001</p>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 text-sm text-foreground">TP-Link TL-WR840N</td>
-                                        <td class="px-6 py-4 text-sm font-semibold text-foreground">2</td>
-                                        <td class="px-6 py-4 text-sm text-muted-foreground">Praktikum Jaringan</td>
-                                        <td class="px-6 py-4 text-sm text-muted-foreground">2024-05-27</td>
-                                        <td class="px-6 py-4 text-sm text-muted-foreground">2024-05-28</td>
-                                        <td class="px-6 py-4"><span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package w-3 h-3">
-                                                    <path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path>
-                                                    <path d="M12 22V12"></path>
-                                                    <polyline points="3.29 7 12 12 20.71 7"></polyline>
-                                                    <path d="m7.5 4.27 9 5.15"></path>
-                                                </svg> Dipinjam</span></td>
-                                        <td class="px-6 py-4">
-                                            <div class="flex items-center gap-2"><button class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Detail"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye w-4 h-4">
-                                                        <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path>
-                                                        <circle cx="12" cy="12" r="3"></circle>
-                                                    </svg></button></div>
-                                        </td>
-                                    </tr>
+                                    <?php if (mysqli_num_rows($query) == 0) { ?>
+                                        <tr>
+                                            <td colspan="8" class="px-6 py-8 text-center text-sm text-muted-foreground">
+                                                Belum ada data permintaan barang.
+                                            </td>
+                                        </tr>
+                                    <?php } else { ?>
+                                        <?php while ($data = mysqli_fetch_assoc($query)) { ?>
+                                            <tr class="hover:bg-muted/30 transition-colors">
+                                                <td class="px-6 py-4">
+                                                    <div>
+                                                        <p class="font-medium text-foreground"><?= htmlspecialchars($data['nama_peminjam'] ?? 'Tidak Diketahui') ?></p>
+                                                        <p class="text-sm text-muted-foreground"><?= htmlspecialchars($data['npm_peminjam'] ?? '-') ?></p>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 text-sm text-foreground">
+                                                    <?= htmlspecialchars($data['nama_barang'] ?? 'Barang Terhapus') ?>
+                                                </td>
+                                                <td class="px-6 py-4 text-sm font-semibold text-foreground">
+                                                    <?= htmlspecialchars($data['jumlah']) ?>
+                                                </td>
+                                                <td class="px-6 py-4 text-sm text-muted-foreground">
+                                                    <?= htmlspecialchars($data['keperluan'] ?? '-') ?>
+                                                </td>
+                                                <td class="px-6 py-4 text-sm text-muted-foreground">
+                                                    <?= date('Y-m-d', strtotime($data['waktu_pinjam'])) ?>
+                                                </td>
+                                                <td class="px-6 py-4 text-sm text-muted-foreground">
+                                                    <?= date('Y-m-d', strtotime($data['estimasi_kembali'])) ?>
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <?php 
+                                                    $status = $data['status'];
+                                                    if ($status === 'Menunggu') { ?>
+                                                        <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock w-3 h-3">
+                                                                <circle cx="12" cy="12" r="10"></circle>
+                                                                <polyline points="12 6 12 12 16 14"></polyline>
+                                                            </svg> Menunggu</span>
+                                                    <?php } elseif ($status === 'Disetujui') { ?>
+                                                        <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big w-3 h-3">
+                                                                <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
+                                                                <path d="m9 11 3 3L22 4"></path>
+                                                            </svg> Disetujui</span>
+                                                    <?php } elseif ($status === 'Ditolak') { ?>
+                                                        <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-x w-3 h-3">
+                                                                <circle cx="12" cy="12" r="10"></circle>
+                                                                <path d="m15 9-6 6"></path>
+                                                                <path d="m9 9 6 6"></path>
+                                                            </svg> Ditolak</span>
+                                                    <?php } elseif ($status === 'Sedang Dipinjam') { ?>
+                                                        <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package w-3 h-3">
+                                                                <path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path>
+                                                                <path d="M12 22V12"></path>
+                                                                <polyline points="3.29 7 12 12 20.71 7"></polyline>
+                                                                <path d="m7.5 4.27 9 5.15"></path>
+                                                            </svg> Dipinjam</span>
+                                                    <?php } else { ?>
+                                                        <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">
+                                                            <?= htmlspecialchars($status) ?>
+                                                        </span>
+                                                    <?php } ?>
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <div class="flex items-center gap-2">
+                                                        <button class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Detail"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye w-4 h-4">
+                                                                <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path>
+                                                                <circle cx="12" cy="12" r="3"></circle>
+                                                            </svg></button>
+                                                        <?php if ($status === 'Menunggu') { ?>
+                                                            <button class="px-3 py-1 text-sm bg-green-50 text-green-600 hover:bg-green-100 rounded-lg transition-colors">Validasi</button>
+                                                        <?php } ?>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <?php } ?>
+                                    <?php } ?>
                                 </tbody>
                             </table>
                         </div>
