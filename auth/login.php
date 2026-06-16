@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($row = $result->fetch_assoc()) {
         $status_akun = isset($row['status_akun']) ? $row['status_akun'] : 'Aktif';
-        
+
         if ($status_akun !== 'Aktif') {
             $error = 'Akun Anda nonaktif.';
         } else {
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['nama']    = $row['nama'];
                 $_SESSION['role']    = $row['role'];
                 $_SESSION['avatar']  = isset($row['avatar']) ? $row['avatar'] : '';
-                
+
                 header("Location: ../profil/index.php");
                 exit;
             } else {
@@ -41,9 +41,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'NPM/Username tidak ditemukan.';
     }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -52,26 +54,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/feather-icons"></script>
     <script>
-        tailwind.config = { 
-            theme: { 
-                extend: { 
+        tailwind.config = {
+            theme: {
+                extend: {
                     fontFamily: {
                         sans: ['Poppins', 'sans-serif'],
                     },
-                    colors: { 
-                        primary: '#1e3b8a', 
-                        card: '#ffffff', 
-                        foreground: '#1e293b', 
-                        muted: '#f1f5f9', 
-                        'muted-foreground': '#64748b', 
-                        'input-background': '#f8fafc', 
-                        border: '#e2e8f0' 
-                    } 
-                } 
-            } 
+                    colors: {
+                        primary: '#1e3b8a',
+                        card: '#ffffff',
+                        foreground: '#1e293b',
+                        muted: '#f1f5f9',
+                        'muted-foreground': '#64748b',
+                        'input-background': '#f8fafc',
+                        border: '#e2e8f0'
+                    }
+                }
+            }
         }
     </script>
 </head>
+
 <body class="bg-[#1e3b8a] min-h-screen flex items-center justify-center p-4">
     <div class="w-full max-w-5xl grid lg:grid-cols-2 gap-8 items-center">
         <div class="hidden lg:flex flex-col items-center justify-center text-white space-y-6">
@@ -89,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="mb-8">
                 <h2 class="text-2xl font-bold text-foreground">Login ke Sistem</h2>
                 <p class="text-muted-foreground mt-2 text-sm">Masukkan kredensial Anda untuk melanjutkan</p>
-                <?php if($error): ?>
+                <?php if ($error): ?>
                     <p class="text-red-500 mt-3 text-sm bg-red-50 p-3 rounded-lg border border-red-200"><?= htmlspecialchars($error) ?></p>
                 <?php endif; ?>
             </div>
@@ -109,30 +112,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
                 <button type="submit" class="w-full px-4 py-3 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-all shadow-lg font-semibold text-sm tracking-wide">Login</button>
-                
+
                 <div class="p-4 bg-blue-50 rounded-lg border border-blue-200">
                     <p class="text-xs text-blue-900 leading-relaxed">
                         <span class="font-semibold">Info:</span> Akun mahasiswa dibuat oleh Admin atau Aslab. Hubungi admin laboratorium jika Anda belum memiliki akun.
                     </p>
                 </div>
             </form>
-            <div class="mt-8 text-center"><p class="text-xs text-muted-foreground">© 2026 Universitas Singaperbangsa Karawang.</p></div>
+            <div class="mt-8 text-center">
+                <p class="text-xs text-muted-foreground">© 2026 Universitas Singaperbangsa Karawang.</p>
+            </div>
         </div>
     </div>
     <script>
         feather.replace();
+
         function togglePassword() {
             var x = document.getElementById("password");
             var icon = document.getElementById("eyeIcon");
-            if (x.type === "password") { 
+            if (x.type === "password") {
                 x.type = "text";
                 icon.setAttribute("data-feather", "eye-off");
-            } else { 
-                x.type = "password"; 
+            } else {
+                x.type = "password";
                 icon.setAttribute("data-feather", "eye");
             }
             feather.replace();
         }
     </script>
 </body>
+
 </html>

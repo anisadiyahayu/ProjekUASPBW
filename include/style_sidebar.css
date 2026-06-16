@@ -1,0 +1,42 @@
+
+.sidebar-collapsed {
+    width: 80px !important;
+}
+
+.sidebar-collapsed span,
+.sidebar-collapsed h1,
+.sidebar-collapsed p {
+    display: none;
+}
+
+.main-expanded {
+    margin-left: 80px !important;
+}
+
+.sidebar-collapsed .flex.items-center.gap-3 {
+    justify-content: center;
+}
+
+.sidebar-collapsed ul li a {
+    justify-content: center;
+}
+
+.sidebar-collapsed ul li a svg {
+    margin-right: 0;
+}
+
+@media (max-width: 768px){
+
+    #sidebar{
+        transform: translateX(-100%);
+    }
+
+    #sidebar.show{
+        transform: translateX(0);
+    }
+
+    #main-content{
+        margin-left:0 !important;
+    }
+
+}

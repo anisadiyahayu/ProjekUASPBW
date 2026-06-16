@@ -7,7 +7,6 @@ if (!isset($_SESSION['role'])) {
 
 include '../koneksi.php';
 include 'fungsi_stok.php';
-include "../include/header.php";
 
 $search   = $_GET['search'] ?? '';
 $kategori = $_GET['kategori'] ?? '';

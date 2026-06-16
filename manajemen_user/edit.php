@@ -1,7 +1,6 @@
 <?php
 require_once '../auth/role_check.php';
 require_once '../include/koneksi.php';
-require_once '../include/header.php';
 
 $id = $_GET['id'] ?? '';
 $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
@@ -79,4 +78,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
     </div>
 </div>
-<?php require_once '../include/footer.php'; ?>

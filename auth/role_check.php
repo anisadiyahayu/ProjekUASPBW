@@ -5,3 +5,4 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'Admin') {
     header("Location: ../profil/index.php");
     exit;
 }
+?>
