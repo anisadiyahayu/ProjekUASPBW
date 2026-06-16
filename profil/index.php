@@ -1,6 +1,6 @@
 <?php
 require_once '../include/koneksi.php';
-require_once '../include/header.php';
+require_once '../template/header.php';
 
 $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
 $stmt->bind_param("s", $_SESSION['user_id']);
@@ -10,11 +10,12 @@ $myProfile = $stmt->get_result()->fetch_assoc();
 $msg = $_GET['msg'] ?? '';
 ?>
 <div class="space-y-6">
-    <?php if($msg == 'success'): ?>
+
+    <?php if ($msg == 'success'): ?>
         <div class="p-4 bg-green-100 text-green-700 rounded-lg">Profil berhasil diperbarui.</div>
-    <?php elseif($msg == 'pass_success'): ?>
+    <?php elseif ($msg == 'pass_success'): ?>
         <div class="p-4 bg-green-100 text-green-700 rounded-lg">Password berhasil diubah.</div>
-    <?php elseif($msg == 'pass_err'): ?>
+    <?php elseif ($msg == 'pass_err'): ?>
         <div class="p-4 bg-red-100 text-red-700 rounded-lg">Password lama salah atau konfirmasi tidak cocok.</div>
     <?php endif; ?>
 
@@ -30,7 +31,7 @@ $msg = $_GET['msg'] ?? '';
         <form action="edit.php" method="POST" enctype="multipart/form-data" class="px-8 pb-8">
             <div class="flex items-end gap-6 -mt-16 mb-6">
                 <div class="w-32 h-32 rounded-full bg-card border-4 border-card shadow-xl flex items-center justify-center overflow-hidden relative group">
-                    <?php if(!empty($myProfile['avatar'])): ?>
+                    <?php if (!empty($myProfile['avatar'])): ?>
                         <img src="../<?= htmlspecialchars($myProfile['avatar']) ?>" class="w-full h-full object-cover" />
                     <?php else: ?>
                         <i data-feather="user" class="w-20 h-20 text-gray-400"></i>
@@ -52,21 +53,28 @@ $msg = $_GET['msg'] ?? '';
                     <input type="text" name="nama" value="<?= htmlspecialchars($myProfile['nama'] ?? '') ?>" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary/20">
                 </div>
                 <div>
-                    <label class="flex items-center gap-2 text-sm font-medium mb-2 text-muted-foreground"><i data-feather="mail" class="w-4 h-4"></i> Email</label>
+                    <label class="flex items-center gap-2 text-sm font-medium mb-2 text-muted-foreground">
+                        <i data-feather="mail" class="w-4 h-4"></i> Email
+                    </label>
                     <input type="email" name="email" value="<?= htmlspecialchars($myProfile['email'] ?? '') ?>" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary/20">
                 </div>
                 <div>
-                    <label class="flex items-center gap-2 text-sm font-medium mb-2 text-muted-foreground"><i data-feather="phone" class="w-4 h-4"></i> No. Telepon</label>
+                    <label class="flex items-center gap-2 text-sm font-medium mb-2 text-muted-foreground">
+                        <i data-feather="phone" class="w-4 h-4"></i> No. Telepon
+                    </label>
                     <input type="text" name="no_hp" value="<?= htmlspecialchars($myProfile['no_hp'] ?? '') ?>" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary/20">
                 </div>
                 <div>
-                    <label class="flex items-center gap-2 text-sm font-medium mb-2 text-muted-foreground"><i data-feather="hash" class="w-4 h-4"></i> Kelas & Angkatan</label>
+                    <label class="flex items-center gap-2 text-sm font-medium mb-2 text-muted-foreground">
+                        <i data-feather="hash" class="w-4 h-4"></i> Kelas & Angkatan
+                    </label>
                     <div class="flex gap-2">
                         <input type="text" name="kelas" value="<?= htmlspecialchars($myProfile['kelas'] ?? '') ?>" placeholder="Kelas" class="w-1/2 px-4 py-2 border rounded-lg">
                         <input type="number" name="angkatan" value="<?= htmlspecialchars($myProfile['angkatan'] ?? '') ?>" placeholder="Angkatan" class="w-1/2 px-4 py-2 border rounded-lg">
                     </div>
                 </div>
             </div>
+
             <div class="mt-6 flex justify-end">
                 <button type="submit" class="flex items-center gap-2 px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-700">
                     <i data-feather="save" class="w-4 h-4"></i> Simpan Profil
@@ -95,5 +103,6 @@ $msg = $_GET['msg'] ?? '';
             </button>
         </form>
     </div>
+
 </div>
 <?php require_once '../include/footer.php'; ?>
