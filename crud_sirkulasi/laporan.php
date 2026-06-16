@@ -60,7 +60,6 @@ ORDER BY items.id DESC
 <body>
     <div class="flex min-h-screen">
 
-        <!-- SIDEBAR -->
         <aside class="fixed left-0 top-0 w-64 h-screen bg-[#1E3A8A] text-white">
             <div class="h-full flex flex-col">
                 <div class="p-5 border-b border-blue-800">
@@ -119,10 +118,8 @@ ORDER BY items.id DESC
             </div>
         </aside>
 
-        <!-- CONTENT -->
         <div class="ml-64 flex-1">
 
-            <!-- TOPBAR -->
             <header
                 class="bg-white border-b h-[56px] px-6 flex justify-between items-center">
 
@@ -188,14 +185,12 @@ ORDER BY items.id DESC
 
             </header>
 
-            <!-- MAIN -->
             <main class="p-6">
                 <div class="mb-6">
                     <h1 class="text-3xl font-bold text-slate-800">Laporan Inventaris</h1>
                     <p class="text-slate-500">Buat dan kelola laporan inventaris laboratorium</p>
                 </div>
 
-                <!-- MENU LAPORAN - PERBAIKAN: Struktur grid yang benar -->
                 <div class="grid md:grid-cols-3 gap-4 mb-6">
 
                     <div onclick="pilihLaporan('barang')" id="laporan_barang" class="card p-5 border-2 border-blue-700 cursor-pointer hover:shadow-lg transition">
@@ -225,7 +220,6 @@ ORDER BY items.id DESC
 
                 </div>
 
-                <!-- FILTER -->
                 <div class="card p-5 mb-6">
                     <h3 class="font-semibold mb-4">Filter Laporan</h3>
                     <div class="grid md:grid-cols-4 gap-4">
@@ -242,7 +236,6 @@ ORDER BY items.id DESC
                             <select class="w-full border rounded-lg px-4 py-2">
                                 <option value="">Semua Kategori</option>
                                 <?php
-                                // Simpan data kategori untuk digunakan nanti
                                 $kategori_data = [];
                                 while ($k = mysqli_fetch_assoc($kategori)) :
                                     $kategori_data[] = $k;
@@ -256,7 +249,6 @@ ORDER BY items.id DESC
                             <select class="w-full border rounded-lg px-4 py-2">
                                 <option value="">Semua Lokasi</option>
                                 <?php
-                                // Simpan data lokasi untuk digunakan nanti
                                 $lokasi_data = [];
                                 while ($l = mysqli_fetch_assoc($lokasi)) :
                                     $lokasi_data[] = $l;
@@ -268,7 +260,6 @@ ORDER BY items.id DESC
                     </div>
                 </div>
 
-                <!-- AKSI LAPORAN -->
                 <div class="card p-5 mb-6">
                     <h3 class="font-semibold mb-4">Aksi Laporan</h3>
                     <div class="grid md:grid-cols-4 gap-4">
@@ -287,12 +278,10 @@ ORDER BY items.id DESC
                     </div>
                 </div>
 
-                <!-- PREVIEW -->
                 <div class="card p-5">
                     <h3 class="font-semibold mb-4">Preview Laporan</h3>
                     <div id="previewArea">
 
-                        <!-- Placeholder -->
                         <div id="previewPlaceholder" class="bg-slate-50 rounded-xl p-16 text-center">
                             <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-slate-200 flex items-center justify-center">
                                 <i data-lucide="file-text" class="w-10 h-10 text-slate-500"></i>
@@ -301,7 +290,6 @@ ORDER BY items.id DESC
                             <p class="text-slate-500 text-sm">Pilih rentang tanggal dan filter yang sesuai, kemudian klik Preview</p>
                         </div>
 
-                        <!-- TABEL - PERBAIKAN: Struktur tabel yang benar -->
                         <div id="tablePreview" class="hidden">
                             <div class="overflow-x-auto">
                                 <table class="w-full">
@@ -367,33 +355,22 @@ ORDER BY items.id DESC
             document.getElementById('laporan_' + jenis).classList.add('border-2', 'border-blue-700');
         }
 
-        // PERBAIKAN: Fungsi previewLaporan yang benar (hanya 1 fungsi)
         function previewLaporan() {
-            // Sembunyikan placeholder
             document.getElementById('previewPlaceholder').style.display = 'none';
-            // Tampilkan tabel
             document.getElementById('tablePreview').classList.remove('hidden');
-
-            // Logika berdasarkan jenis laporan (bisa dikembangkan)
             console.log('Jenis laporan:', jenisLaporan);
 
             if (jenisLaporan === 'barang') {
-                // Data barang sudah ditampilkan di tabel default
             } else if (jenisLaporan === 'masuk') {
-                // TODO: Fetch data barang masuk via AJAX
                 alert('Fitur laporan barang masuk akan segera hadir');
             } else if (jenisLaporan === 'keluar') {
-                // TODO: Fetch data barang keluar via AJAX
                 alert('Fitur laporan barang keluar akan segera hadir');
             } else if (jenisLaporan === 'stok') {
-                // TODO: Filter hanya stok rendah
                 alert('Fitur laporan stok akan segera hadir');
             } else if (jenisLaporan === 'permintaan') {
-                // TODO: Fetch data peminjaman
                 alert('Fitur laporan permintaan akan segera hadir');
             }
 
-            // Re-init icons untuk elemen baru
             lucide.createIcons();
         }
     </script>
