@@ -2,12 +2,14 @@
     <div class="flex flex-col h-full">
         <div class="p-6 border-b border-sidebar-border">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-lg bg-sidebar-primary flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package w-6 h-6 text-sidebar-primary-foreground">
+                <div class="w-10 h-10 rounded-lg bg-sidebar-primary flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package w-6 h-6 text-sidebar-primary-foreground">
                         <path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path>
                         <path d="M12 22V12"></path>
                         <polyline points="3.29 7 12 12 20.71 7"></polyline>
                         <path d="m7.5 4.27 9 5.15"></path>
-                    </svg></div>
+                    </svg>
+                </div>
                 <div>
                     <h1 class="font-semibold text-lg">Lab Inventory</h1>
                     <p class="text-xs text-sidebar-foreground/70">Admin Panel</p>
@@ -70,13 +72,17 @@
                             <circle cx="12" cy="12" r="10"></circle>
                             <circle cx="12" cy="10" r="3"></circle>
                             <path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"></path>
-                        </svg><span class="font-medium">Profil Saya</span></a></li>
+                        </svg>
+                        <span class="font-medium">Profil Saya</span>
+                    </a>
+                </li>
             </ul>
         </nav>
-        <div class="p-4 border-t border-sidebar-border"><a href="/auth/logout.php" class="flex items-center gap-3 px-4 py-3 w-full rounded-lg text-sidebar-foreground/80 hover:bg-destructive/20 hover:text-destructive transition-all"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out w-5 h-5">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                    <polyline points="16 17 21 12 16 7"></polyline>
-                    <line x1="21" x2="9" y1="12" y2="12"></line>
-                </svg><span class="font-medium">Logout</span></a></div>
+        <div class="p-4 border-t border-sidebar-border">
+            <a href="../auth/logout.php" class="flex items-center gap-3 px-4 py-3 w-full rounded-lg text-sidebar-foreground/80 hover:bg-destructive/20 hover:text-destructive transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out w-5 h-5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" x2="9" y1="12" y2="12"></line></svg>
+                <span class="font-medium">Logout</span>
+            </a>
+        </div>
     </div>
 </aside>

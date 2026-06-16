@@ -9,13 +9,13 @@ if ($id) {
     $stmt->bind_param("s", $id);
     
     if ($stmt->execute()) {
-        echo "<script>alert('Data berhasil dihapus!');</script>";
+        echo "<script>alert('Data berhasil dihapus!'); window.location='index.php';</script>";
     } else {
-        echo "<script>alert('Gagal menghapus! User mungkin terikat transaksi.');</script>";
+        echo "<script>alert('Gagal menghapus! User mungkin terikat transaksi.'); window.location='index.php';</script>";
     }
     $stmt->close();
+} else {
+    echo "<script>window.location='index.php';</script>";
 }
-
-header("Location: index.php");
 exit;
 ?>

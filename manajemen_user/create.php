@@ -18,54 +18,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if($stmt->execute()) {
         echo "<script>alert('Berhasil! Password default: 123456'); window.location='index.php';</script>";
     } else {
-        $error = "Gagal menambah user. NPM mungkin sudah ada.";
+        echo "<script>alert('Gagal menambah user. NPM mungkin sudah ada.'); window.location='index.php';</script>";
     }
+} else {
+    header("Location: index.php");
+    exit;
 }
 ?>
-<div class="max-w-2xl mx-auto bg-card rounded-xl shadow-md border border-border">
-    <div class="p-6 border-b border-border flex justify-between items-center">
-        <h2 class="text-xl font-semibold">Tambah User Baru</h2>
-        <a href="index.php" class="p-2 hover:bg-muted rounded-lg"><i data-feather="x"></i></a>
-    </div>
-    <div class="p-6">
-        <?php if(isset($error)) echo "<p class='text-red-500 mb-4'>$error</p>"; ?>
-        <form method="POST" class="space-y-4">
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-medium mb-2">Nama Lengkap</label>
-                    <input type="text" name="nama" required class="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-primary/20">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-2">NPM/NIDN</label>
-                    <input type="text" name="npm" required class="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-primary/20">
-                </div>
-            </div>
-            <div class="grid grid-cols-3 gap-4">
-                <div>
-                    <label class="block text-sm font-medium mb-2">Role</label>
-                    <select name="role" class="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-primary/20">
-                        <option value="Mahasiswa">Mahasiswa</option>
-                        <option value="Aslab">Aslab</option>
-                        <option value="Admin">Admin</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-2">Kelas</label>
-                    <input type="text" name="kelas" class="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-primary/20">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-2">Angkatan</label>
-                    <input type="number" name="angkatan" class="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-primary/20">
-                </div>
-            </div>
-            <div>
-                <label class="block text-sm font-medium mb-2">No HP</label>
-                <input type="text" name="no_hp" class="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-primary/20">
-            </div>
-            <div class="flex gap-3 pt-4">
-                <a href="index.php" class="flex-1 text-center px-4 py-2 border rounded-lg hover:bg-muted">Batal</a>
-                <button type="submit" class="flex-1 px-4 py-2 text-center rounded-lg hover:bg-blue-700">Simpan</button>
-            </div>
-        </form>
-    </div>
-</div>
