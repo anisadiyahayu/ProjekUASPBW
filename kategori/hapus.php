@@ -1,6 +1,12 @@
 <?php
+<<<<<<< HEAD
 require_once '../auth/auth_check.php';
 include "../include/koneksi.php";
+=======
+
+include "../include/koneksi.php";
+
+>>>>>>> main_inventaris
 $id = $_GET['id'];
 
 mysqli_query(
