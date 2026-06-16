@@ -5,7 +5,6 @@ include "koneksi.php";
 
 $nama = $_SESSION['nama'];
 
-// Query untuk mengambil seluruh riwayat peminjaman user beserta nama barangnya
 $query = mysqli_query($conn, "
 SELECT 
     peminjaman.*, 

@@ -284,7 +284,7 @@ function time_elapsed_string($datetime, $full = false)
                                     <p class="text-xs text-slate-500 mt-1 font-medium"><?= time_elapsed_string($a['created_at']); ?></p>
                                 </div>
                             </div>
-                    <?php
+                        <?php
                             $i++;
                         endwhile;
                     else: ?>
