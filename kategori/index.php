@@ -1,6 +1,11 @@
 <?php
+<<<<<<< HEAD
 require_once '../auth/auth_check.php';
 include "../include/koneksi.php";
+=======
+include "../include/koneksi.php";
+include "../include/header.php";
+>>>>>>> main_inventaris
 
 $query = mysqli_query(
     $conn,
