@@ -1,6 +1,6 @@
 <?php
-include "auth.php";
-include "koneksi.php";
+include "../auth.php";
+include "../koneksi.php";
 
 $id_user = $_SESSION['id'];
 

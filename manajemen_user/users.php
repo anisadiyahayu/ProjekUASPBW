@@ -1,6 +1,6 @@
 <?php
-include "auth.php";
-include "koneksi.php";
+include "../auth.php";
+include "../koneksi.php";
 
 $nama = $_SESSION['nama'];
 $cari = $_GET['cari'] ?? '';

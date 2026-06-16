@@ -1,12 +1,12 @@
 <?php
-$conn = new mysqli("localhost", "root", '', "db_invertaris_lab");
+$conn = new mysqli("localhost", "root", 'root', "simlab");
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 
 $host = "localhost";
 $username = "root";
-$password = "";
+$password = "root";
 $database = "simlab";
 
 $conn = mysqli_connect(
@@ -21,7 +21,7 @@ if (!$conn) {
 }
 }?>
 <?php
-$conn = new mysqli("localhost", "root", '', "db_invertaris_lab");
+$conn = new mysqli("localhost", "root", 'root', "simlab");
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);

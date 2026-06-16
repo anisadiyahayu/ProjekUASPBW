@@ -1,6 +1,6 @@
 <?php
-include "auth.php";
-include "koneksi.php";
+include "../auth.php";
+include "../koneksi.php";
 
 $nama     = $_POST['nama'];
 $npm      = $_POST['npm'];
