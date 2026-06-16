@@ -3,7 +3,7 @@
 include "auth.php";
 include "koneksi.php";
 
-$nama = $_SESSION['nama'];
+$nama_session = $_SESSION['nama'];
 
 $status = $_GET['status'] ?? '';
 
@@ -13,24 +13,7 @@ if ($status != '') {
     $where = "WHERE peminjaman.status='$status'";
 }
 
-$query = mysqli_query($conn, "
-SELECT
-peminjaman.*,
-users.nama,
-users.npm,
-items.nama_barang
-
-FROM peminjaman
-
-LEFT JOIN users
-ON peminjaman.user_id = users.id
-
-LEFT JOIN items
-ON peminjaman.item_id = items.id
-
-$where
-
-ORDER BY peminjaman.id DESC
+$query = mysqli_query($conn, "SELECT peminjaman.*, users.nama, users.npm, items.nama_barang FROM peminjaman LEFT JOIN users ON peminjaman.user_id = users.id LEFT JOIN items ON peminjaman.item_id = items.id $where ORDER BY peminjaman.id DESC
 ");
 
 ?>
@@ -243,7 +226,7 @@ ORDER BY peminjaman.id DESC
                     <div class="text-right">
 
                         <h4 class="text-sm font-semibold">
-                            <?= htmlspecialchars($nama) ?>
+                            <?= htmlspecialchars($nama_session) ?>
                         </h4>
 
                         <p class="text-[11px] text-slate-500">
@@ -255,7 +238,7 @@ ORDER BY peminjaman.id DESC
                     <div
                         class="w-10 h-10 rounded-full bg-[#1E3A8A] text-white flex items-center justify-center font-semibold">
 
-                        <?= strtoupper(substr($nama, 0, 2)) ?>
+                        <?= strtoupper(substr($nama_session, 0, 2)) ?>
 
                     </div>
 
@@ -384,7 +367,7 @@ ORDER BY peminjaman.id DESC
                                         <div class="font-medium text-slate-800">
 
                                             <h4 class="text-sm font-semibold">
-                                                <?= htmlspecialchars($nama ?? '') ?>
+                                                <?= htmlspecialchars($row['nama'] ?? '') ?>
                                             </h4>
 
                                         </div>
@@ -444,29 +427,25 @@ ORDER BY peminjaman.id DESC
 
                                     <div class="flex justify-center gap-4">
 
-                                        <!-- DETAIL -->
-
                                         <button
                                             type="button"
                                             class="text-blue-600"
 
                                             onclick='openDetail(
-<?= json_encode($row["nama"]) ?>,
-<?= json_encode($row["npm"]) ?>,
-<?= json_encode($row["nama_barang"]) ?>,
-<?= $row["jumlah"] ?>,
-<?= json_encode($row["keperluan"]) ?>,
-<?= json_encode($row["tanggal_pinjam"]) ?>,
-<?= json_encode($row["tanggal_kembali"]) ?>,
-<?= json_encode($row["status"]) ?>,
-<?= json_encode($row["catatan"]) ?>
-)'>
+                                            <?= json_encode($row["nama"]) ?>,
+                                            <?= json_encode($row["npm"]) ?>,
+                                            <?= json_encode($row["nama_barang"]) ?>,
+                                            <?= $row["jumlah"] ?>,
+                                            <?= json_encode($row["keperluan"]) ?>,
+                                            <?= json_encode($row["tanggal_pinjam"]) ?>,
+                                            <?= json_encode($row["tanggal_kembali"]) ?>,
+                                            <?= json_encode($row["status"]) ?>,
+                                            <?= json_encode($row["catatan"]) ?>
+                                            )'>
 
                                             <i data-lucide="eye"></i>
 
                                         </button>
-
-                                        <!-- VALIDASI -->
 
                                         <?php if ($row['status'] == 'pending') : ?>
 
@@ -474,15 +453,15 @@ ORDER BY peminjaman.id DESC
                                                 type="button"
 
                                                 onclick='openValidasi(
-<?= $row["id"] ?>,
-<?= json_encode($row["nama"]) ?>,
-<?= json_encode($row["npm"]) ?>,
-<?= json_encode($row["nama_barang"]) ?>,
-<?= $row["jumlah"] ?>,
-<?= json_encode($row["keperluan"]) ?>,
-<?= json_encode($row["tanggal_pinjam"]) ?>,
-<?= json_encode($row["tanggal_kembali"]) ?>
-)'
+                                                <?= $row["id"] ?>,
+                                                <?= json_encode($row["nama"]) ?>,
+                                                <?= json_encode($row["npm"]) ?>,
+                                                <?= json_encode($row["nama_barang"]) ?>,
+                                                <?= $row["jumlah"] ?>,
+                                                <?= json_encode($row["keperluan"]) ?>,
+                                                <?= json_encode($row["tanggal_pinjam"]) ?>,
+                                                <?= json_encode($row["tanggal_kembali"]) ?>
+                                                )'
 
                                                 class="bg-green-100 text-green-700 px-3 py-1 rounded-lg text-xs">
 
@@ -510,7 +489,6 @@ ORDER BY peminjaman.id DESC
 
     </div>
 
-    <!-- MODAL DETAIL -->
 
     <div
         id="modalDetail"
@@ -682,8 +660,6 @@ ORDER BY peminjaman.id DESC
         </div>
 
     </div>
-
-    <!-- MODAL VALIDASI -->
 
     <div
         id="modalValidasi"
