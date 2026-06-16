@@ -12,7 +12,7 @@ require_once '../include/koneksi.php';
 <body>
     <div class="min-h-screen bg-background">
         <?php $current_page = 'profil'; ?>
-        <?php if($_SESSION['role'] === 'Admin') { include __DIR__ . '/../template/sidebar_admin.php'; 
+        <?php if(($_SESSION['role'] === 'Admin') || $_SESSION['role'] === 'Aslab') { include __DIR__ . '/../template/sidebar_admin.php'; 
         } else { include __DIR__ . '/../template/sidebar.php';} ?>
         <div id="main-content" class="transition-all duration-300 ml-64">
             <?php include __DIR__ . '/../template/header.php'; ?>
@@ -84,7 +84,7 @@ require_once '../include/koneksi.php';
                                 </div>
                             </div>
                             <div class="mt-6 flex justify-end">
-                                <button type="submit" class="flex items-center gap-2 px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-700">
+                                <button type="submit" class="flex items-center gap-2 px-6 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-700">
                                     <i data-feather="save" class="w-4 h-4"></i> Simpan Profil
                                 </button>
                             </div>
@@ -106,7 +106,7 @@ require_once '../include/koneksi.php';
                                 <label class="block text-sm font-medium mb-2">Konfirmasi Password Baru</label>
                                 <input type="password" name="confirm_pass" required class="w-full px-4 py-2 border rounded-lg focus:ring-2">
                             </div>
-                            <button type="submit" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-700">
+                            <button type="submit" class="px-6 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-700">
                                 Update Password
                             </button>
                         </form>

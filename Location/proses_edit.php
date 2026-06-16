@@ -1,6 +1,8 @@
 <?php
 // proses_edit.php
-require_once 'koneksi.php';
+require_once '../auth/role_check.php';
+require_once '../include/koneksi.php';
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Keamanan: Mencegah SQL Injection dengan real_escape_string

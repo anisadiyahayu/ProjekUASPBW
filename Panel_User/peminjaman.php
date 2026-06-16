@@ -1,17 +1,15 @@
 <?php
-
 include "auth.php";
 include "../include/koneksi.php";
 
 $nama = $_SESSION['nama'];
-$id_user = $_SESSION['id'];
+$id_user = $_SESSION['user_id'] ?? $_SESSION['id']; // Pastikan sesuai dengan nama session id anda
 
 $status_filter = $_GET['status'] ?? '';
-
 $where = '';
 
 if($status_filter != ''){
-    $where = "WHERE peminjaman.status='$status_filter'";
+    $where = " AND transactions.status='$status_filter'";
 }
 
 $query = mysqli_query($conn,"
@@ -21,626 +19,168 @@ SELECT
     users.npm,
     items.nama AS nama_barang
 FROM transactions
-LEFT JOIN users
-    ON transactions.id_user = users.id
-LEFT JOIN items
-    ON transactions.id_item = items.id
-WHERE transactions.id_user = '$id_user'
-".($status_filter != '' ? " AND transactions.status = '$status_filter'" : "")."
+LEFT JOIN users ON transactions.id_user = users.id
+LEFT JOIN items ON transactions.id_item = items.id
+WHERE transactions.id_user = '$id_user' $where
 ORDER BY transactions.id DESC
 ");
 
 if(!$query){
     die(mysqli_error($conn));
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Peminjaman Barang</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-<style>
-
-*{
-font-family:'Poppins',sans-serif;
-}
-
-body{
-background:#f1f5f9;
-}
-
-.card{
-background:white;
-border:1px solid #e5e7eb;
-border-radius:12px;
-box-shadow:0 1px 3px rgba(0,0,0,.08);
-}
-
-table{
-font-size:13px;
-}
-
-thead{
-font-size:12px;
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peminjaman Barang</title>
+    <link rel="stylesheet" href="../include/style_tailwind.css">
+    <link rel="stylesheet" href="../include/style_sidebar.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
+<body class="bg-slate-50 text-slate-800 antialiased font-sans">
 
-<body>
-    <aside
-class="fixed left-0 top-0 w-64 h-screen bg-[#1E3A8A] text-white"
->
+    <div class="min-h-screen flex">
+        <?php $current_page = 'peminjaman'; ?>
+        <?php include '../template/sidebar.php'; ?>
 
-<div class="h-full flex flex-col">
+        <div id="main-content" class="flex-1 min-w-0 flex flex-col transition-all duration-300 ml-64">
+            <?php include '../template/header.php'; ?>
 
-<div class="p-4 border-b border-blue-800">
+            <main class="p-6 flex-1 max-w-7xl w-full mx-auto space-y-6">
+                
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h1 class="text-2xl font-bold text-slate-800">Status Peminjaman</h1>
+                        <p class="text-sm text-slate-500 mt-1">Pantau status persetujuan barang yang sedang Anda ajukan.</p>
+                    </div>
 
-<div class="flex items-center gap-2">
+                    <form action="" method="GET" class="flex items-center gap-2">
+                        <select name="status" class="px-4 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm" onchange="this.form.submit()">
+                            <option value="">-- Semua Status --</option>
+                            <option value="Pending" <?= $status_filter == 'Pending' ? 'selected' : '' ?>>Pending</option>
+                            <option value="Sedang Dipinjam" <?= $status_filter == 'Sedang Dipinjam' ? 'selected' : '' ?>>Disetujui / Dipinjam</option>
+                            <option value="Ditolak" <?= $status_filter == 'Ditolak' ? 'selected' : '' ?>>Ditolak</option>
+                        </select>
+                    </form>
+                </div>
 
-<div
-class="w-8 h-8 rounded-lg bg-[#3B82F6] flex items-center justify-center"
->
-<i data-lucide="box" class="w-4 h-4"></i>
-</div>
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-sm">
+                            <thead>
+                                <tr class="bg-slate-50 border-b border-slate-200 text-slate-600">
+                                    <th class="px-6 py-4 font-semibold">Nama Barang</th>
+                                    <th class="px-6 py-4 font-semibold text-center">Jumlah</th>
+                                    <th class="px-6 py-4 font-semibold">Tanggal Pengajuan</th>
+                                    <th class="px-6 py-4 font-semibold text-center">Status</th>
+                                    <th class="px-6 py-4 font-semibold text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <?php while($row = mysqli_fetch_assoc($query)) : ?>
+                                <tr class="hover:bg-slate-50/80 transition-colors">
+                                    <td class="px-6 py-4 font-medium text-slate-800"><?= htmlspecialchars($row['nama_barang']) ?></td>
+                                    <td class="px-6 py-4 text-center font-semibold text-slate-700"><?= htmlspecialchars($row['jumlah']) ?></td>
+                                    <td class="px-6 py-4 text-slate-500"><?= date('d M Y, H:i', strtotime($row['waktu_pinjam'])) ?></td>
+                                    <td class="px-6 py-4 text-center">
+                                        <?php if($row['status'] == 'Pending'): ?>
+                                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-600 border border-amber-200">Menunggu</span>
+                                        <?php elseif($row['status'] == 'Sedang Dipinjam' || $row['status'] == 'Disetujui'): ?>
+                                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600 border border-emerald-200">Disetujui</span>
+                                        <?php elseif($row['status'] == 'Ditolak'): ?>
+                                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-rose-50 text-rose-600 border border-rose-200">Ditolak</span>
+                                        <?php else: ?>
+                                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-slate-50 text-slate-600 border border-slate-200"><?= htmlspecialchars($row['status']) ?></span>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <button onclick="openDetail('<?= htmlspecialchars($row['nama'], ENT_QUOTES) ?>', '<?= htmlspecialchars($row['npm'], ENT_QUOTES) ?>', '<?= htmlspecialchars($row['nama_barang'], ENT_QUOTES) ?>', '<?= htmlspecialchars($row['jumlah'], ENT_QUOTES) ?>', '<?= htmlspecialchars($row['keterangan'] ?? '-', ENT_QUOTES) ?>', '<?= htmlspecialchars($row['status'], ENT_QUOTES) ?>')" class="text-blue-600 hover:text-blue-800 p-1.5 hover:bg-blue-50 rounded-lg transition-colors focus:outline-none" title="Detail Permintaan">
+                                            <i data-lucide="eye" class="w-4 h-4"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <?php endwhile; ?>
+                                
+                                <?php if(mysqli_num_rows($query) == 0): ?>
+                                <tr>
+                                    <td colspan="5" class="px-6 py-12 text-center text-slate-400">
+                                        Tidak ada catatan peminjaman dengan status tersebut.
+                                    </td>
+                                </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
-<div>
-<h1 class="font-semibold text-sm">
-Lab Inventory
-</h1>
+                <div id="modalDetail" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 items-center justify-center p-4 transition-all">
+                    <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg overflow-hidden flex flex-col">
+                        <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                            <h3 class="font-bold text-slate-800 flex items-center gap-2"><i data-lucide="info" class="w-5 h-5 text-blue-500"></i> Detail Permintaan</h3>
+                            <button onclick="closeDetail()" class="text-slate-400 hover:text-slate-600 focus:outline-none"><i data-lucide="x" class="w-5 h-5"></i></button>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 space-y-3 text-sm">
+                                <p class="flex items-start"><span class="w-24 font-semibold text-slate-600 shrink-0">Peminjam</span><span class="text-slate-800"><span id="d_nama"></span> (<span id="d_npm"></span>)</span></p>
+                                <p class="flex items-start"><span class="w-24 font-semibold text-slate-600 shrink-0">Barang</span><span id="d_barang" class="text-slate-800 font-medium"></span></p>
+                                <p class="flex items-start"><span class="w-24 font-semibold text-slate-600 shrink-0">Jumlah</span><span id="d_jumlah" class="text-slate-800"></span></p>
+                                <p class="flex items-start"><span class="w-24 font-semibold text-slate-600 shrink-0">Keperluan</span><span id="d_keperluan" class="text-slate-600 leading-relaxed"></span></p>
+                            </div>
+                            <div class="flex items-center gap-3 pt-2">
+                                <span class="text-sm font-semibold text-slate-600">Status Saat Ini:</span>
+                                <span id="d_status"></span>
+                            </div>
+                        </div>
+                        <div class="px-6 py-4 border-t border-slate-100 bg-slate-50 flex justify-end">
+                            <button onclick="closeDetail()" class="px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-100 transition-colors shadow-sm">Tutup</button>
+                        </div>
+                    </div>
+                </div>
 
-<p class="text-[10px] text-blue-200">
-Student Portal
-</p>
-</div>
-
-</div>
-
-</div>
-
-<nav class="flex-1 py-3">
-
-<ul class="space-y-1 px-2">
-
-<li>
-<a
-href="dashboard_mahasiswa.php"
-class="flex items-center gap-2 px-3 py-3 rounded-lg hover:bg-blue-800 text-sm"
->
-<i data-lucide="layout-dashboard" class="w-4 h-4"></i>
-Dashboard
-</a>
-</li>
-
-<li>
-<a
-href="katalog.php"
-class="flex items-center gap-2 px-3 py-3 rounded-lg hover:bg-blue-800 text-sm"
->
-<i data-lucide="package" class="w-4 h-4"></i>
-Katalog Barang
-</a>
-</li>
-
-<li>
-<a
-href="peminjaman.php"
-class="bg-[#3B82F6] flex items-center gap-2 px-3 py-3 rounded-lg text-sm"
->
-<i data-lucide="clipboard-list" class="w-4 h-4"></i>
-Peminjaman Barang
-</a>
-</li>
-
-<li>
-<a
-href="pengembalian.php"
-class="flex items-center gap-2 px-3 py-3 rounded-lg hover:bg-blue-800 text-sm"
->
-<i data-lucide="rotate-ccw" class="w-4 h-4"></i>
-Pengembalian Barang
-</a>
-</li>
-
-<li>
-<a
-href="riwayat.php"
-class="flex items-center gap-2 px-3 py-3 rounded-lg hover:bg-blue-800 text-sm"
->
-<i data-lucide="history" class="w-4 h-4"></i>
-Riwayat Peminjaman
-</a>
-</li>
-
-<li>
-<a
-href="profil.php"
-class="flex items-center gap-2 px-3 py-3 rounded-lg hover:bg-blue-800 text-sm"
->
-<i data-lucide="user" class="w-4 h-4"></i>
-Profil Saya
-</a>
-</li>
-
-</ul>
-
-</nav>
-
-<div class="p-4 border-t border-blue-800">
-
-<a
-href="logout.php"
-class="group flex items-center gap-3 px-4 py-4 rounded-xl hover:bg-[#4C3F91] transition-all duration-300"
->
-
-<i
-data-lucide="log-out"
-class="w-5 h-5 text-white group-hover:text-red-500"
-></i>
-
-<span class="font-medium text-white group-hover:text-red-500">
-Logout
-</span>
-
-</a>
-
-</div>
-
-</div>
-
-</aside>
-
-<div class="ml-64">
-
-<header
-class="bg-white border-b h-[52px] px-6 flex justify-between items-center"
->
-
-<div class="flex items-center gap-4">
-
-<button>
-<i data-lucide="x" class="w-4 h-4 text-slate-500"></i>
-</button>
-
-<div class="relative w-[270px]">
-
-<i
-data-lucide="search"
-class="absolute left-3 top-2.5 w-4 h-4 text-slate-400"
-></i>
-
-<input
-type="text"
-placeholder="Cari barang laboratorium..."
-class="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 bg-slate-50 text-sm"
->
-
-</div>
-
-</div>
-
-<div class="flex items-center gap-5">
-
-<div class="relative">
-
-<i data-lucide="bell" class="w-5 h-5"></i>
-
-<span
-class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center"
->
-2
-</span>
-
-</div>
-
-<div class="flex items-center gap-3">
-
-<div class="text-right">
-
-<h4 class="text-sm font-semibold">
-<?= $nama ?>
-</h4>
-
-<p class="text-[11px] text-slate-500">
-Mahasiswa
-</p>
-
-</div>
-
-<div
-class="w-9 h-9 rounded-full bg-[#1E3A8A] text-white flex items-center justify-center text-sm font-semibold"
->
-<?= strtoupper(substr($nama,0,2)); ?>
-</div>
-
-</div>
-
-</div>
-
-</header>
-
-<main class="p-6">
-
-<div class="mb-6">
-
-<h1 class="text-[20px] font-semibold text-slate-800">
-Permintaan Barang
-</h1>
-
-<p class="text-sm text-slate-500">
-Kelola permintaan peminjaman barang laboratorium
-</p>
-
-</div>
-
-<div class="card p-2 mb-5">
-
-    <div class="grid grid-cols-3 gap-2">
-
-        <a
-        href="peminjaman.php"
-        class="text-center py-2 rounded-lg text-sm font-medium
-        <?= $status_filter=='' ? 'bg-[#1E3A8A] text-white' : 'text-slate-600 hover:bg-slate-100'; ?>"
-        >
-            Semua Permintaan
-        </a>
-
-        <a
-        href="peminjaman.php?status=pending"
-        class="text-center py-2 rounded-lg text-sm font-medium
-        <?= $status_filter=='pending' ? 'bg-[#1E3A8A] text-white' : 'text-slate-600 hover:bg-slate-100'; ?>"
-        >
-            Pending
-        </a>
-
-        <a
-        href="peminjaman.php?status=disetujui"
-        class="text-center py-2 rounded-lg text-sm font-medium
-        <?= $status_filter=='disetujui' ? 'bg-[#1E3A8A] text-white' : 'text-slate-600 hover:bg-slate-100'; ?>"
-        >
-            Disetujui
-        </a>
-
+            </main>
+        </div>
     </div>
 
-</div>
-
-<div class="card overflow-hidden">
-
-    <div class="overflow-x-auto">
-
-        <table class="w-full">
-
-            <thead class="bg-slate-50">
-
-                <tr>
-
-                    <th class="px-5 py-4 text-left">
-                        Peminjam
-                    </th>
-
-                    <th class="px-5 py-4 text-left">
-                        Barang
-                    </th>
-
-                    <th class="px-5 py-4 text-left">
-                        Jumlah
-                    </th>
-
-                    <th class="px-5 py-4 text-left">
-                        Keperluan
-                    </th>
-
-                    <th class="px-5 py-4 text-left">
-                        Tanggal Pinjam
-                    </th>
-
-                    <th class="px-5 py-4 text-left">
-                        Estimasi Kembali
-                    </th>
-
-                    <th class="px-5 py-4 text-left">
-                        Status
-                    </th>
-
-        
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-            <?php while($row = mysqli_fetch_assoc($query)) : ?>
-
-                <tr
-                class="border-t hover:bg-slate-50 transition-all duration-200"
-                >
-
-                    <!-- PEMINJAM -->
-
-                    <td class="px-5 py-4">
-
-                        <h4 class="font-medium">
-                            <?= $row['nama']; ?>
-                        </h4>
-
-                        <p class="text-xs text-slate-500">
-                            <?= $row['npm']; ?>
-                        </p>
-
-                    </td>
-
-                    <!-- BARANG -->
-
-                    <td class="px-5 py-4">
-
-                        <?= $row['nama_barang']; ?>
-
-                    </td>
-
-                    <!-- JUMLAH -->
-
-                    <td class="px-5 py-4">
-
-                        <?= $row['jumlah']; ?>
-
-                    </td>
-
-                    <!-- KEPERLUAN -->
-
-                    <td class="px-5 py-4">
-
-                        <?= $row['keperluan']; ?>
-
-                    </td>
-
-                    <!-- TGL PINJAM -->
-
-                    <td class="px-5 py-4">
-
-                        <?= date('d M Y', strtotime($row['tanggal_pinjam'])); ?>
-
-                    </td>
-
-                    <!-- TGL KEMBALI -->
-
-                    <td class="px-5 py-4">
-
-                        <?= date('d M Y', strtotime($row['tanggal_kembali'])); ?>
-
-                    </td>
-
-                    <!-- STATUS -->
-
-                    <td class="px-5 py-4">
-
-                        <?php
-
-                        if($row['status']=='pending')
-                        {
-                            echo '
-                            <span class="bg-yellow-100 text-yellow-700 text-[11px] px-3 py-1 rounded-full font-medium">
-                            Menunggu
-                            </span>';
-                        }
-
-                        elseif($row['status']=='disetujui')
-                        {
-                            echo '
-                            <span class="bg-green-100 text-green-700 text-[11px] px-3 py-1 rounded-full font-medium">
-                            Disetujui
-                            </span>';
-                        }
-
-                        elseif($row['status']=='ditolak')
-                        {
-                            echo '
-                            <span class="bg-red-100 text-red-700 text-[11px] px-3 py-1 rounded-full font-medium">
-                            Ditolak
-                            </span>';
-                        }
-
-                        elseif($row['status']=='dikembalikan')
-                        {
-                            echo '
-                            <span class="bg-blue-100 text-blue-700 text-[11px] px-3 py-1 rounded-full font-medium">
-                            Selesai
-                            </span>';
-                        }
-
-                        ?>
-
-                    </td>
-
-                    <!-- AKSI -->
-
-                    <td class="px-5 py-4 text-center">
-
-<button
-type="button"
-onclick='openDetail(
-<?= json_encode($row["nama"]) ?>,
-<?= json_encode($row["npm"]) ?>,
-<?= json_encode($row["nama_barang"]) ?>,
-<?= $row["jumlah"] ?>,
-<?= json_encode($row["keperluan"]) ?>,
-<?= json_encode($row["tanggal_pinjam"]) ?>,
-<?= json_encode($row["tanggal_kembali"]) ?>,
-<?= json_encode($row["status"]) ?>
-)'
-class="inline-flex items-center justify-center w-8 h-8 rounded-lg border border-slate-200 hover:bg-slate-100"
->
-
-<i data-lucide="eye" class="w-4 h-4"></i>
-
-</button>
-
-</td>
-
-                </tr>
-
-            <?php endwhile; ?>
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-</div>
-
-</main>
-
-</div>
-
-<script>
-lucide.createIcons();
-
-function openDetail(
-nama,
-npm,
-barang,
-jumlah,
-keperluan,
-pinjam,
-kembali,
-status
-){
-
-document.getElementById('d_nama').innerHTML = nama;
-document.getElementById('d_npm').innerHTML = npm;
-document.getElementById('d_barang').innerHTML = barang;
-document.getElementById('d_jumlah').innerHTML = jumlah;
-document.getElementById('d_keperluan').innerHTML = keperluan;
-document.getElementById('d_pinjam').innerHTML = pinjam;
-document.getElementById('d_kembali').innerHTML = kembali;
-
-let badge='';
-
-if(status=='pending'){
-badge='<span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs">Menunggu</span>';
-}
-else if(status=='disetujui'){
-badge='<span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs">Disetujui</span>';
-}
-else if(status=='ditolak'){
-badge='<span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs">Ditolak</span>';
-}
-else{
-badge='<span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs">Selesai</span>';
-}
-
-document.getElementById('d_status').innerHTML = badge;
-
-document
-.getElementById('modalDetail')
-.classList.remove('hidden');
-
-}
-
-function closeDetail(){
-
-document
-.getElementById('modalDetail')
-.classList.add('hidden');
-
-}
-
-</script>
-
-<div
-id="modalDetail"
-class="hidden fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4"
->
-
-<div class="bg-white rounded-2xl shadow-xl w-full max-w-xl">
-
-<div class="p-5 border-b flex justify-between items-center">
-
-<h3 class="font-semibold text-xl">
-Detail Permintaan
-</h3>
-
-<button onclick="closeDetail()">
-✕
-</button>
-
-</div>
-
-<div class="p-5">
-
-<div class="bg-slate-50 rounded-xl p-4 space-y-3">
-
-<p>
-<b>Peminjam:</b>
-<span id="d_nama"></span>
-(<span id="d_npm"></span>)
-</p>
-
-<p>
-<b>Barang:</b>
-<span id="d_barang"></span>
-</p>
-
-<p>
-<b>Jumlah:</b>
-<span id="d_jumlah"></span>
-</p>
-
-<p>
-<b>Keperluan:</b>
-<span id="d_keperluan"></span>
-</p>
-
-<p>
-<b>Tanggal Pinjam:</b>
-<span id="d_pinjam"></span>
-</p>
-
-<p>
-<b>Estimasi Kembali:</b>
-<span id="d_kembali"></span>
-</p>
-
-<p>
-<b>Status:</b>
-<span id="d_status"></span>
-</p>
-
-</div>
-
-</div>
-
-<div class="p-5 border-t flex justify-end">
-
-<button
-onclick="closeDetail()"
-class="px-5 py-2 bg-[#1E3A8A] text-white rounded-lg"
->
-Tutup
-</button>
-
-</div>
-
-</div>
-
-</div>
-
+    <script src="../include/script.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script>
+        feather.replace();
+    </script>
+    <script>
+        lucide.createIcons();
+
+        function openDetail(nama, npm, barang, jumlah, keperluan, status){
+            document.getElementById('d_nama').innerText = nama;
+            document.getElementById('d_npm').innerText = npm;
+            document.getElementById('d_barang').innerText = barang;
+            document.getElementById('d_jumlah').innerText = jumlah;
+            document.getElementById('d_keperluan').innerText = keperluan;
+
+            let badge = '';
+            if(status.toLowerCase() === 'pending' || status.toLowerCase() === 'menunggu'){
+                badge = '<span class="bg-amber-100 text-amber-700 border border-amber-200 px-3 py-1 rounded-full text-xs font-semibold">Menunggu Validasi</span>';
+            } else if(status.toLowerCase() === 'sedang dipinjam' || status.toLowerCase() === 'disetujui') {
+                badge = '<span class="bg-emerald-100 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-full text-xs font-semibold">Disetujui / Dipinjam</span>';
+            } else if(status.toLowerCase() === 'ditolak') {
+                badge = '<span class="bg-rose-100 text-rose-700 border border-rose-200 px-3 py-1 rounded-full text-xs font-semibold">Ditolak</span>';
+            } else {
+                badge = '<span class="bg-blue-100 text-blue-700 border border-blue-200 px-3 py-1 rounded-full text-xs font-semibold">Selesai</span>';
+            }
+            document.getElementById('d_status').innerHTML = badge;
+
+            const modal = document.getElementById('modalDetail');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeDetail(){
+            const modal = document.getElementById('modalDetail');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }
+    </script>
 </body>
-</html>
+</html> 

@@ -1,11 +1,6 @@
 <?php
-<<<<<<< HEAD
 require_once '../auth/auth_check.php';
 include "../include/koneksi.php";
-=======
-include "../include/koneksi.php";
-include "../include/header.php";
->>>>>>> main_inventaris
 
 $query = mysqli_query(
     $conn,
@@ -26,7 +21,7 @@ $query = mysqli_query(
 
 <div class="min-h-screen bg-background">
     <?php $current_page = 'kategori'; ?>
-    <?php if ($_SESSION['role'] === 'Admin') {
+    <?php if ($_SESSION['role'] === 'Admin' || $_SESSION['role'] === 'Aslab') {
         include __DIR__ . '/../template/sidebar_admin.php';
     } else {
         include __DIR__ . '/../template/sidebar.php';

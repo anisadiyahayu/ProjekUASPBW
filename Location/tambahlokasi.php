@@ -1,6 +1,8 @@
 <?php
 // tambahlokasi.php
-include "../include/header.php";
+require_once '../auth/role_check.php';
+require_once '../include/koneksi.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="id">

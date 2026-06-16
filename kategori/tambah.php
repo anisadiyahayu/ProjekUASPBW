@@ -1,9 +1,5 @@
 <?php
-<<<<<<< HEAD
 require_once '../auth/auth_check.php';
-=======
-
->>>>>>> main_inventaris
 include "../include/koneksi.php";
 
 $nama = $_POST['nama'];

@@ -1,7 +1,7 @@
 <?php
 // hapus.php
-require_once 'koneksi.php';
-include "../include/header.php";
+require_once '../auth/role_check.php';
+require_once '../include/koneksi.php';
 
 // Cek apakah parameter ID tersedia di URL
 if (isset($_GET['id'])) {
