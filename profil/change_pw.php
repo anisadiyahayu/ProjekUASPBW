@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once '../auth/auth_check.php';
 require_once '../include/koneksi.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($old === $user['password'] || password_verify($old, $user['password'])) {
         $hashed_new = password_hash($new, PASSWORD_DEFAULT);
-        
+
         $stmtUpdate = $conn->prepare("UPDATE users SET password = ? WHERE id = ?");
         $stmtUpdate->bind_param("ss", $hashed_new, $id);
         $stmtUpdate->execute();
