@@ -69,7 +69,6 @@
                             <path d="M12 7v5l4 2"></path>
                         </svg><span class="font-medium">Riwayat Aktivias</span></a></li>
                 <li><a href="/profil/index.php" class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all <?= (isset($current_page) && $current_page == 'profil') ? 'bg-sidebar-primary text-sidebar-primary-foreground shadow-lg' : 'text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground' ?>" data-discover="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-user w-5 h-5">
->>>>>>> cf787ab2a0ffd99e7775828498533433a8dee1e7
                             <circle cx="12" cy="12" r="10"></circle>
                             <circle cx="12" cy="10" r="3"></circle>
                             <path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"></path>

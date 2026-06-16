@@ -1,13 +1,8 @@
 <?php
-require_once '../auth/auth_check.php';
+session_start();
 require_once '../include/koneksi.php';
 
-if(!isset($_SESSION['user_id'])) {
-    header("Location: ../auth/login.php");
-    exit;
-}
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = $_SESSION['user_id'];
     $nama = $_POST['nama'];
     $email = $_POST['email'];
@@ -15,15 +10,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $kelas = $_POST['kelas'];
     $angkatan = $_POST['angkatan'];
 
-    $avatar_path = $_SESSION['avatar'];
-
+    $avatar_path = $_SESSION['avatar']; 
+    
     if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] == 0) {
         $allowed = ['jpg', 'jpeg', 'png'];
         $ext = pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION);
-
+        
         if (in_array(strtolower($ext), $allowed)) {
             if (!is_dir('../uploads')) mkdir('../uploads', 0777, true);
-
+            
             $new_filename = 'uploads/avatar_' . $id . '_' . time() . '.' . $ext;
             if (move_uploaded_file($_FILES['avatar']['tmp_name'], '../' . $new_filename)) {
                 $avatar_path = $new_filename;
@@ -35,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt = $conn->prepare("UPDATE users SET nama=?, email=?, no_hp=?, kelas=?, angkatan=?, avatar=? WHERE id=?");
     $stmt->bind_param("ssssiss", $nama, $email, $no_hp, $kelas, $angkatan, $avatar_path, $id);
     $stmt->execute();
-
+    
     $_SESSION['nama'] = $nama;
 
     header("Location: index.php?msg=success");

@@ -1,10 +1,8 @@
 <?php
-// Pastikan session sudah dimulai jika menggunakan variabel $_SESSION
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// require_once __DIR__ . '/../auth/auth_check.php'; // Uncomment ini sesuai dengan sistem auth Anda
 $current_page = basename($_SERVER['PHP_SELF']);
 $current_dir = basename(dirname($_SERVER['PHP_SELF']));
 ?>
@@ -25,9 +23,8 @@ $current_dir = basename(dirname($_SERVER['PHP_SELF']));
                         sans: ['Poppins', 'sans-serif'],
                     },
                     colors: {
-                        // Warna disesuaikan dengan palet pada gambar UI
-                        primarySidebar: '#243e8a', // Biru gelap sidebar
-                        activeMenu: '#3b82f6',     // Biru terang menu aktif
+                        primarySidebar: '#243e8a', 
+                        activeMenu: '#3b82f6',     
                         background: '#f4f7fb',
                         foreground: '#1e293b',
                     }
@@ -36,7 +33,6 @@ $current_dir = basename(dirname($_SERVER['PHP_SELF']));
         }
     </script>
     <style>
-        /* Custom scrollbar untuk sidebar agar rapi */
         .sidebar-scroll::-webkit-scrollbar {
             width: 5px;
         }
@@ -80,7 +76,7 @@ $current_dir = basename(dirname($_SERVER['PHP_SELF']));
                     </li>
                     
                     <li>
-                        <a href="../inventaris lab/admin/index.php" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all 
+                        <a href="../data_barang/index.php" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all 
                             <?= ($current_dir == 'data_barang') ? 'bg-activeMenu text-white shadow-md' : 'text-blue-100 hover:bg-white/10 hover:text-white' ?>">
                             <i data-feather="package" class="w-5 h-5"></i> <span>Data Barang</span>
                         </a>
@@ -94,7 +90,6 @@ $current_dir = basename(dirname($_SERVER['PHP_SELF']));
                     </li>
 
                     <li>
-                        <!-- Anda bisa menyesuaikan nama folder "lokasi_penyimpanan" sesuai nama folder XAMPP Anda -->
                         <a href="../Location/index.php" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all 
                             <?= ($current_dir == 'Location') ? 'bg-activeMenu text-white shadow-md' : 'text-blue-100 hover:bg-white/10 hover:text-white' ?>">
                             <i data-feather="map-pin" class="w-5 h-5"></i> <span>Lokasi Penyimpanan</span>
