@@ -13,18 +13,24 @@ $user = mysqli_fetch_assoc(
 mysqli_query($conn,"SELECT * FROM users WHERE id='$id'")
 );
 
-if(!password_verify($lama,$user['password'])){
+$password_lama_cocok = false;
 
-echo "<script>
-alert('Password lama salah');
+if (password_verify($lama, $user['password'])) {
+    $password_lama_cocok = true;
+}
+
+if ($lama == $user['password']) {
+    $password_lama_cocok = true;
+}
+
+if ($password_lama_cocok == false) {
+echo "<script>alert('Password lama salah');
 history.back();
 </script>";
 exit;
-
 }
 
-if($baru != $konfirmasi){
-
+if ($baru != $konfirmasi) {
 echo "<script>
 alert('Konfirmasi password tidak cocok');
 history.back();

@@ -15,12 +15,13 @@ if (isset($_POST['ubah_password'])) {
     $baru = $_POST['baru'];
     $konfirmasi = $_POST['konfirmasi'];
 
-    if ($lama != $user['password']) {
+    if (!password_verify($lama, $user['password'])) {
         echo "<script>alert('Password lama salah');</script>";
     } elseif ($baru != $konfirmasi) {
         echo "<script>alert('Konfirmasi password tidak sama');</script>";
     } else {
-        mysqli_query($conn, "UPDATE users SET password = '$baru' WHERE id = '$id'");
+        $password_hashed = password_hash($baru, PASSWORD_DEFAULT);
+        mysqli_query($conn, "UPDATE users SET password = '$password_hashed' WHERE id = '$id'");
         echo "
         <script>
             alert('Password berhasil diubah');
