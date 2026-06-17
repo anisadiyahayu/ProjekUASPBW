@@ -1,6 +1,6 @@
 <?php
 
-include "auth.php";
+include "../manajemen_user/auth.php";
 include "../koneksi.php";
 
 $nama = $_SESSION['nama'];
