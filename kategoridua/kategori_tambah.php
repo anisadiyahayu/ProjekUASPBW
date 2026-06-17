@@ -1,7 +1,7 @@
 <?php
 
 include "auth.php";
-include "koneksi.php";
+include "../koneksi.php";
 
 if(isset($_POST['nama']))
 {

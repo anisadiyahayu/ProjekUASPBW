@@ -1,7 +1,7 @@
 <?php
 
 include "auth.php";
-include "koneksi.php";
+include "../koneksi.php";
 
 $nama = $_SESSION['nama'];
 
@@ -80,13 +80,9 @@ class="w-9 h-9 rounded-lg bg-[#3B82F6] flex items-center justify-center"
 
 <div>
 
-<h1 class="font-semibold">
-Lab Inventory
-</h1>
+<h1 class="font-semibold">Lab Inventory</h1>
 
-<p class="text-xs text-blue-200">
-Admin Panel
-</p>
+<p class="text-xs text-blue-200">Admin Panel</p>
 
 </div>
 
@@ -98,82 +94,52 @@ Admin Panel
 
 <div class="space-y-1">
 
-<a
-href="dashboard_admin.php"
-class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-800 text-sm"
->
+<a href="dashboard_admin.php"class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-800 text-sm">
 <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
 Dashboard
 </a>
 
-<a
-href="barang.php"
-class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-800 text-sm"
->
+<a href="barang.php"class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-800 text-sm">
 <i data-lucide="package" class="w-4 h-4"></i>
 Data Barang
 </a>
 
-<a
-href="kategori.php"
-class="bg-[#3B82F6] flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium"
->
+<a href="kategori.php"class="bg-[#3B82F6] flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium">
 <i data-lucide="folder-tree" class="w-4 h-4"></i>
 Kategori Barang
 </a>
 
-<a
-href="lokasi.php"
-class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-800 text-sm"
->
+<a href="lokasi.php"class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-800 text-sm">
 <i data-lucide="map-pin" class="w-4 h-4"></i>
 Lokasi Penyimpanan
 </a>
 
-<a
-href="users.php"
-class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-800 text-sm"
->
+<a href="users.php"class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-800 text-sm">
 <i data-lucide="users" class="w-4 h-4"></i>
 Data User
 </a>
 
-<a
-href="admin_peminjaman.php"
-class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-800 text-sm"
->
+<a href="admin_peminjaman.php"class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-800 text-sm">
 <i data-lucide="package-check" class="w-4 h-4"></i>
 Peminjaman Barang
 </a>
 
-<a
-href="admin_pengembalian.php"
-class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-800 text-sm"
->
+<a href="admin_pengembalian.php"class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-800 text-sm">
 <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
 Pengembalian Barang
 </a>
 
-<a
-href="laporan.php"
-class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-800 text-sm"
->
+<a href="laporan.php"class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-800 text-sm">
 <i data-lucide="file-text" class="w-4 h-4"></i>
 Laporan Inventaris
 </a>
 
-<a
-href="aktivitas.php"
-class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-800 text-sm"
->
+<a href="aktivitas.php"class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-800 text-sm">
 <i data-lucide="history" class="w-4 h-4"></i>
 Riwayat Aktivitas
 </a>
 
-<a
-href="profil_admin.php"
-class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-800 text-sm"
->
+<a href="profil_admin.php"class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-800 text-sm">
 <i data-lucide="user" class="w-4 h-4"></i>
 Profil
 </a>
@@ -184,19 +150,14 @@ Profil
 
 <div class="p-4 border-t border-blue-800">
 
-<a
-href="logout.php"
-class="group flex items-center gap-3 px-4 py-4 rounded-xl hover:bg-[#4C3F91] transition-all"
->
+<a href="logout.php"class="group flex items-center gap-3 px-4 py-4 rounded-xl hover:bg-[#4C3F91] transition-all">
 
 <i
 data-lucide="log-out"
 class="w-5 h-5 text-white group-hover:text-red-500"
 ></i>
 
-<span class="group-hover:text-red-500">
-Logout
-</span>
+<span class="group-hover:text-red-500">Logout</span>
 
 </a>
 
@@ -212,15 +173,9 @@ Logout
 
 <!-- TOPBAR -->
 
-<header
-class="h-[60px] bg-white border-b flex items-center justify-between px-6"
->
+<header class="h-[60px] bg-white border-b flex items-center justify-between px-6">
 
-<input
-type="text"
-placeholder="Cari barang, user, atau aktivitas..."
-class="w-[350px] border rounded-lg px-4 py-2"
-/>
+<input type="text"placeholder="Cari barang, user, atau aktivitas..."class="w-[350px] border rounded-lg px-4 py-2"/>
 
 <div class="flex items-center gap-4">
 
@@ -228,11 +183,7 @@ class="w-[350px] border rounded-lg px-4 py-2"
 
 <i data-lucide="bell"></i>
 
-<span
-class="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center"
->
-5
-</span>
+<span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">5</span>
 
 </div>
 
@@ -242,9 +193,7 @@ class="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-fu
 <?= $nama ?>
 </h4>
 
-<p class="text-xs text-slate-500">
-Administrator
-</p>
+<p class="text-xs text-slate-500">Administrator</p>
 
 </div>
 
@@ -268,25 +217,18 @@ class="w-10 h-10 rounded-full bg-[#1E3A8A] text-white flex items-center justify-
 
 <div>
 
-<h1 class="text-3xl font-bold text-slate-800">
-Kategori Barang
-</h1>
+<h1 class="text-3xl font-bold text-slate-800">Kategori Barang</h1>
 
-<p class="text-slate-500">
-Kelola kategori untuk klasifikasi barang
-</p>
+<p class="text-slate-500">Kelola kategori untuk klasifikasi barang</p>
 
 </div>
 
 <button
 onclick="openTambahKategori()"
-class="bg-[#1E3A8A] text-white px-5 py-3 rounded-xl flex items-center gap-2"
->
+class="bg-[#1E3A8A] text-white px-5 py-3 rounded-xl flex items-center gap-2">
 
 <i data-lucide="plus"></i>
-
 Tambah Kategori
-
 </button>
 
 </div>
@@ -301,21 +243,10 @@ Tambah Kategori
 
 <tr>
 
-<th class="text-left p-5 font-semibold">
-Nama Kategori
-</th>
-
-<th class="text-left p-5 font-semibold">
-Deskripsi
-</th>
-
-<th class="text-center p-5 font-semibold">
-Jumlah Barang
-</th>
-
-<th class="text-center p-5 font-semibold">
-Aksi
-</th>
+<th class="text-left p-5 font-semibold">Nama Kategori</th>
+<th class="text-left p-5 font-semibold">Deskripsi</th>
+<th class="text-center p-5 font-semibold">Jumlah Barang</th>
+<th class="text-center p-5 font-semibold">Aksi</th>
 
 </tr>
 
@@ -331,10 +262,7 @@ Aksi
 
 <div class="flex items-center gap-3">
 
-<div
-class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center"
->
-
+<div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center">
 <i data-lucide="folder-tree" class="w-5 h-5 text-slate-600"></i>
 
 </div>
@@ -361,9 +289,7 @@ class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center"
 
 <td class="p-5 text-center">
 
-<span
-class="px-3 py-1 rounded-full bg-blue-100 text-blue-600 text-sm font-medium"
->
+<span class="px-3 py-1 rounded-full bg-blue-100 text-blue-600 text-sm font-medium">
 
 <?= $row['jumlah_barang'] ?> barang
 
@@ -397,9 +323,7 @@ onclick='openHapusKategori(
 <?= $row["id"] ?>,
 <?= json_encode($row["nama"]) ?>
 )'
-class="text-red-600 hover:text-red-800"
->
-
+class="text-red-600 hover:text-red-800">
 <i data-lucide="trash-2" class="w-4 h-4"></i>
 
 </button>
@@ -424,19 +348,13 @@ class="text-red-600 hover:text-red-800"
 
 <div
 id="modalTambahKategori"
-class="hidden fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4"
->
+class="hidden fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
 
-<div
-class="bg-white rounded-2xl shadow-xl w-full max-w-xl"
->
+<div class="bg-white rounded-2xl shadow-xl w-full max-w-xl">
 
 <div class="border-b p-5 flex justify-between items-center">
 
-<h3 class="text-xl font-semibold">
-Tambah Kategori
-</h3>
-
+<h3 class="text-xl font-semibold">Tambah Kategori</h3>
 <button onclick="closeTambahKategori()">
 
 <i data-lucide="x"></i>
@@ -445,34 +363,27 @@ Tambah Kategori
 
 </div>
 
-<form
-action="kategori_tambah.php"
-method="POST"
->
+<form action="kategori_tambah.php"
+method="POST">
 
 <div class="p-6">
 
 <div class="mb-4">
 
-<label class="block mb-2 font-medium">
-Nama Kategori
-</label>
+<label class="block mb-2 font-medium">Nama Kategori</label>
 
 <input
 type="text"
 name="nama"
 required
 class="w-full border border-slate-200 rounded-lg px-4 py-3"
-placeholder="Masukkan nama kategori"
->
+placeholder="Masukkan nama kategori">
 
 </div>
 
 <div>
 
-<label class="block mb-2 font-medium">
-Deskripsi
-</label>
+<label class="block mb-2 font-medium">Deskripsi</label>
 
 <textarea
 name="deskripsi"
@@ -497,8 +408,7 @@ Batal
 
 <button
 type="submit"
-class="px-5 py-3 bg-[#1E3A8A] text-white rounded-lg"
->
+class="px-5 py-3 bg-[#1E3A8A] text-white rounded-lg">
 Simpan
 </button>
 
@@ -514,16 +424,13 @@ Simpan
 
 <div
 id="modalEditKategori"
-class="hidden fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4"
->
+class="hidden fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
 
 <div class="bg-white rounded-2xl shadow-xl w-full max-w-xl">
 
 <div class="border-b p-5 flex justify-between items-center">
 
-<h3 class="text-xl font-semibold">
-Edit Kategori
-</h3>
+<h3 class="text-xl font-semibold">Edit Kategori</h3>
 
 <button onclick="closeEditKategori()">
 
@@ -533,10 +440,8 @@ Edit Kategori
 
 </div>
 
-<form
-action="kategori_edit.php"
-method="POST"
->
+<form action="kategori_edit.php"
+method="POST">
 
 <input
 type="hidden"
@@ -548,9 +453,7 @@ id="edit_id"
 
 <div class="mb-4">
 
-<label class="block mb-2 font-medium">
-Nama Kategori
-</label>
+<label class="block mb-2 font-medium">Nama Kategori</label>
 
 <input
 type="text"
@@ -564,9 +467,7 @@ class="w-full border border-slate-200 rounded-lg px-4 py-3"
 
 <div>
 
-<label class="block mb-2 font-medium">
-Deskripsi
-</label>
+<label class="block mb-2 font-medium">Deskripsi</label>
 
 <textarea
 name="deskripsi"
@@ -584,20 +485,14 @@ class="w-full border border-slate-200 rounded-lg px-4 py-3"
 <button
 type="button"
 onclick="closeEditKategori()"
-class="px-5 py-3 border rounded-lg"
->
-
+class="px-5 py-3 border rounded-lg">
 Batal
-
 </button>
 
 <button
 type="submit"
-class="px-5 py-3 bg-[#1E3A8A] text-white rounded-lg"
->
-
+class="px-5 py-3 bg-[#1E3A8A] text-white rounded-lg">
 Update
-
 </button>
 
 </div>
@@ -619,22 +514,15 @@ class="hidden fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-
 
 <div class="border-b p-5 flex justify-between items-center">
 
-<h3 class="text-xl font-semibold text-red-600">
-Konfirmasi Hapus
-</h3>
-
+<h3 class="text-xl font-semibold text-red-600">Konfirmasi Hapus</h3>
 <button onclick="closeHapusKategori()">
-
 <i data-lucide="x"></i>
-
 </button>
 
 </div>
 
-<form
-action="kategori_hapus.php"
-method="POST"
->
+<form action="kategori_hapus.php"
+method="POST">
 
 <input
 type="hidden"
@@ -644,19 +532,8 @@ id="hapus_id"
 
 <div class="p-6">
 
-<p class="text-slate-600">
-
-Apakah Anda yakin ingin menghapus kategori
-
-<strong id="hapus_nama"></strong> ?
-
-</p>
-
-<p class="text-red-500 text-sm mt-2">
-
-Data yang dihapus tidak dapat dikembalikan.
-
-</p>
+<p class="text-slate-600">Apakah Anda yakin ingin menghapus kategori<strong id="hapus_nama"></strong> ?</p>
+<p class="text-red-500 text-sm mt-2">Data yang dihapus tidak dapat dikembalikan.</p>
 
 </div>
 
@@ -665,20 +542,14 @@ Data yang dihapus tidak dapat dikembalikan.
 <button
 type="button"
 onclick="closeHapusKategori()"
-class="px-5 py-3 border rounded-lg"
->
-
+class="px-5 py-3 border rounded-lg">
 Batal
-
 </button>
 
 <button
 type="submit"
-class="px-5 py-3 bg-red-600 text-white rounded-lg"
->
-
+class="px-5 py-3 bg-red-600 text-white rounded-lg">
 Hapus
-
 </button>
 
 </div>
@@ -690,56 +561,34 @@ Hapus
 </div>
 
 <script>
-
 function openTambahKategori(){
-document
-.getElementById('modalTambahKategori')
-.classList.remove('hidden');
+document.getElementById('modalTambahKategori').classList.remove('hidden');
 }
 
 function closeTambahKategori(){
-document
-.getElementById('modalTambahKategori')
-.classList.add('hidden');
+document.getElementById('modalTambahKategori').classList.add('hidden');
 }
 
 function openEditKategori(id,nama,deskripsi){
-
 document.getElementById('edit_id').value=id;
 document.getElementById('edit_nama').value=nama;
 document.getElementById('edit_deskripsi').value=deskripsi;
-
-document
-.getElementById('modalEditKategori')
-.classList.remove('hidden');
+document.getElementById('modalEditKategori').classList.remove('hidden');
 
 }
 
 function closeEditKategori(){
-
-document
-.getElementById('modalEditKategori')
-.classList.add('hidden');
-
+document.getElementById('modalEditKategori').classList.add('hidden');
 }
 
 function openHapusKategori(id,nama){
-
 document.getElementById('hapus_id').value=id;
 document.getElementById('hapus_nama').innerText=nama;
-
-document
-.getElementById('modalHapusKategori')
-.classList.remove('hidden');
-
+document.getElementById('modalHapusKategori').classList.remove('hidden');
 }
 
 function closeHapusKategori(){
-
-document
-.getElementById('modalHapusKategori')
-.classList.add('hidden');
-
+document.getElementById('modalHapusKategori').classList.add('hidden');
 }
 
 lucide.createIcons();
