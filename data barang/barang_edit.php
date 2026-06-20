@@ -29,3 +29,4 @@ WHERE id = '$id'
 
 header("Location: barang.php");
 exit;
+?>

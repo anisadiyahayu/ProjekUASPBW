@@ -18,34 +18,26 @@ if ($search != '') {
     OR items.kode_barang LIKE '%$search%'
     )";
 }
-
 if ($kategori != '') {
     $where .= " AND items.id_kategori='$kategori'";
 }
-
 if ($lokasi != '') {
     $where .= " AND items.id_lokasi='$lokasi'";
 }
-
 if ($kondisi != '') {
     $where .= " AND items.kondisi='$kondisi'";
 }
 
 $query = mysqli_query($conn, "
-SELECT
-items.*,
-categories.nama AS kategori,
-locations.nama_lokasi AS lokasi,
-laboratorium.nama_lab AS laboratorium
-FROM items
-LEFT JOIN categories
-ON items.id_kategori = categories.id
-LEFT JOIN locations
-ON items.id_lokasi = locations.id
-LEFT JOIN laboratorium
-ON items.id_lab = laboratorium.id
-$where
-ORDER BY items.id DESC
+    SELECT items.*, categories.nama AS kategori, 
+    locations.nama_lokasi AS lokasi, 
+    laboratorium.nama_lab AS laboratorium
+    FROM items
+    LEFT JOIN categories ON items.id_kategori = categories.id
+    LEFT JOIN locations ON items.id_lokasi = locations.id
+    LEFT JOIN laboratorium ON items.id_lab = laboratorium.id
+    $where
+    ORDER BY items.id DESC
 ");
 
 $kategoriList = mysqli_query($conn, "
@@ -69,39 +61,38 @@ ORDER BY nama_lokasi
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Barang</title>
-
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-
+    <link rel="stylesheet" href="sidebar.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
     <style>
         * {
             font-family: 'Poppins', sans-serif;
         }
-
         body {
             background: #f1f5f9;
         }
-
         .card {
             background: white;
             border: 1px solid #e5e7eb;
             border-radius: 12px;
             box-shadow: 0 1px 3px rgba(0, 0, 0, .08);
         }
-
         .table-row:hover {
             background: #f8fafc;
         }
     </style>
+    <script>
+        if (localStorage.getItem("mini_sidebar") === "collapsed") {
+            document.documentElement.classList.add("mini-active");
+        }
+    </script>
 </head>
 
 <body>
-
-    <aside class="fixed left-0 top-0 w-64 h-screen bg-[#1E3A8A] text-white">
+    <aside id="sidebar" class="fixed left-0 top-0 w-64 h-screen bg-[#1E3A8A] text-white transition-all duration-300 z-20">
         <div class="h-full flex flex-col">
             <div class="p-5 border-b border-blue-800">
                 <div class="flex items-center gap-3">
@@ -114,7 +105,6 @@ ORDER BY nama_lokasi
                     </div>
                 </div>
             </div>
-
             <nav class="flex-1 px-2 py-4">
                 <div class="space-y-1">
                     <a href="dashboard_admin.php" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-800 text-sm">
@@ -138,7 +128,7 @@ ORDER BY nama_lokasi
                         Data User
                     </a>
                     <a href="admin_peminjaman.php" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-800 text-sm">
-                        <i data-lucide="clipboard-list" class="w-4 h-4"></i>
+                        <i data-lucide="package-check" class="w-4 h-4"></i>
                         Peminjaman Barang
                     </a>
                     <a href="admin_pengembalian.php" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-800 text-sm">
@@ -159,7 +149,6 @@ ORDER BY nama_lokasi
                     </a>
                 </div>
             </nav>
-
             <div class="p-4 border-t border-blue-800">
                 <a href="logout.php" class="group flex items-center gap-3 px-4 py-4 rounded-xl hover:bg-[#4C3F91]">
                     <i data-lucide="log-out" class="w-5 h-5 group-hover:text-red-500"></i>
@@ -169,37 +158,35 @@ ORDER BY nama_lokasi
         </div>
     </aside>
 
-    <div class="ml-64">
-        <header class="bg-white border-b h-[56px] px-6 flex justify-between items-center">
+    <div id="main-content" class="ml-64 flex-1">
+        <header class="bg-white border-b h-[60px] px-6 flex justify-between items-center sticky top-0 z-10">
             <div class="flex items-center gap-4">
-                <button>
-                    <i data-lucide="menu" class="w-5 h-5 text-slate-500"></i>
+                <button id="sidebar-toggle" class="p-2 -ml-2 rounded-lg hover:bg-slate-100 text-slate-600 transition-colors">
+                    <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="4" y1="6" x2="20" y2="6"></line>
+                        <line x1="4" y1="12" x2="20" y2="12"></line>
+                        <line x1="4" y1="18" x2="20" y2="18"></line>
+                    </svg>
                 </button>
-                <div class="relative w-[300px]">
-                    <i data-lucide="search" class="absolute left-3 top-2.5 w-4 h-4 text-slate-400"></i>
-                    <input type="text" placeholder="Cari barang..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 bg-slate-50 text-sm">
-                </div>
             </div>
-
             <div class="flex items-center gap-5">
-                <div class="relative">
-                    <i data-lucide="bell" class="w-5 h-5"></i>
-                    <span class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
-                        3
-                    </span>
-                </div>
                 <div class="flex items-center gap-3">
                     <div class="text-right">
-                        <h4 class="text-sm font-semibold"><?= htmlspecialchars($nama) ?></h4>
-                        <p class="text-[11px] text-slate-500">Administrator</p>
+                        <h4 class="text-sm font-semibold">
+                            <?= htmlspecialchars($nama) ?>
+                        </h4>
+                        <p class="text-[11px] text-slate-500">
+                            Administrator
+                        </p>
                     </div>
-                    <div class="w-10 h-10 rounded-full bg-[#1E3A8A] text-white flex items-center justify-center font-semibold">
+                    <div
+                        class="w-10 h-10 rounded-full bg-[#1E3A8A] text-white flex items-center justify-center font-semibold">
                         <?= strtoupper(substr($nama, 0, 2)) ?>
                     </div>
                 </div>
             </div>
-        </header>
 
+        </header>
         <main class="p-6">
             <div class="flex justify-between items-start mb-6">
                 <div>
@@ -219,7 +206,7 @@ ORDER BY nama_lokasi
                             <label class="text-sm font-medium block mb-2">Cari Barang</label>
                             <input type="text" name="search" value="<?= htmlspecialchars($search) ?>" placeholder="Nama atau kode barang" class="w-full border border-slate-200 rounded-lg px-4 py-2">
                         </div>
-
+                        
                         <div>
                             <label class="text-sm font-medium block mb-2">Kategori</label>
                             <select name="kategori" class="w-full border border-slate-200 rounded-lg px-4 py-2">
@@ -231,7 +218,7 @@ ORDER BY nama_lokasi
                                 <?php endwhile; ?>
                             </select>
                         </div>
-
+                        
                         <div>
                             <label class="text-sm font-medium block mb-2">Lokasi</label>
                             <select name="lokasi" class="w-full border border-slate-200 rounded-lg px-4 py-2">
@@ -243,7 +230,7 @@ ORDER BY nama_lokasi
                                 <?php endwhile; ?>
                             </select>
                         </div>
-
+                        
                         <div>
                             <label class="text-sm font-medium block mb-2">Kondisi</label>
                             <select name="kondisi" class="w-full border border-slate-200 rounded-lg px-4 py-2">
@@ -254,7 +241,7 @@ ORDER BY nama_lokasi
                             </select>
                         </div>
                     </div>
-
+                    
                     <div class="flex gap-3 mt-4">
                         <button type="submit" class="bg-[#1E3A8A] text-white px-5 py-2 rounded-lg">Filter</button>
                         <a href="barang.php" class="border border-slate-200 px-5 py-2 rounded-lg hover:bg-slate-50">Reset</a>
@@ -269,7 +256,7 @@ ORDER BY nama_lokasi
                         Total: <strong><?= mysqli_num_rows($query) ?></strong> Barang
                     </div>
                 </div>
-
+                
                 <div class="overflow-x-auto">
                     <table class="w-full">
                         <thead class="bg-slate-50">
@@ -285,6 +272,7 @@ ORDER BY nama_lokasi
                                 <th class="px-5 py-4 text-center text-sm font-semibold">Aksi</th>
                             </tr>
                         </thead>
+
                         <tbody>
                             <?php while ($row = mysqli_fetch_assoc($query)) : ?>
                                 <?php
@@ -303,10 +291,12 @@ ORDER BY nama_lokasi
                                     $statusClass = "bg-green-100 text-green-700";
                                 }
                                 ?>
+                                
                                 <tr class="table-row border-t">
                                     <td class="px-5 py-4">
                                         <div class="font-medium"><?= htmlspecialchars($row['kode_barang']) ?></div>
                                     </td>
+
                                     <td class="px-5 py-4">
                                         <div class="flex items-center gap-3">
                                             <?php if (!empty($row['gambar'])) : ?>
@@ -316,43 +306,53 @@ ORDER BY nama_lokasi
                                                     <i data-lucide="package" class="w-5 h-5 text-slate-400"></i>
                                                 </div>
                                             <?php endif; ?>
+
                                             <div>
                                                 <div class="font-medium"><?= htmlspecialchars($row['nama_barang']) ?></div>
                                                 <div class="text-xs text-slate-500"><?= htmlspecialchars($row['laboratorium']) ?></div>
                                             </div>
                                         </div>
                                     </td>
+                                    
                                     <td class="px-5 py-4"><?= htmlspecialchars($row['kategori']) ?></td>
+                                    
                                     <td class="px-5 py-4"><?= htmlspecialchars($row['lokasi']) ?></td>
+                                    
                                     <td class="px-5 py-4 text-center font-semibold"><?= $row['stok'] ?></td>
+                                    
                                     <td class="px-5 py-4 text-center">Unit</td>
+                                    
                                     <td class="px-5 py-4 text-center">
                                         <?php
-                                        if ($row['kondisi'] == "Baik") {
+                                        if ($row['kondisi'] == "baik") {
                                             echo '<span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-medium">Baik</span>';
-                                        } elseif ($row['kondisi'] == "Rusak Ringan") {
+                                        } elseif ($row['kondisi'] == "rusak ringan") {
                                             echo '<span class="px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-xs font-medium">Rusak Ringan</span>';
-                                        } else {
+                                        } elseif ($row['kondisi'] == "rusak berat") {
                                             echo '<span class="px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-medium">Rusak Berat</span>';
                                         }
                                         ?>
                                     </td>
+                                    
                                     <td class="px-5 py-4 text-center">
                                         <span class="px-3 py-1 rounded-full text-xs font-medium <?= $statusClass ?>">
                                             <?= $statusText ?>
                                         </span>
                                     </td>
+                                    
                                     <td class="px-5 py-4">
                                         <div class="flex justify-center gap-2">
-                                            <button type="button" onclick="openDetailBarang(
-                                                '<?= addslashes($row['kode_barang']) ?>',
-                                                '<?= addslashes($row['nama_barang']) ?>',
-                                                '<?= addslashes($row['kategori']) ?>',
-                                                '<?= addslashes($row['lokasi']) ?>',
-                                                '<?= $row['stok'] ?>',
-                                                '<?= addslashes($row['kondisi']) ?>',
-                                                '<?= addslashes($row['deskripsi']) ?>'
-                                            )" class="text-blue-600 hover:text-blue-800">
+                                            <button type="button" 
+                                                onclick="openDetailBarang(
+                                                    '<?= $row['kode_barang'] ?>', 
+                                                    '<?= addslashes($row['nama_barang']) ?>', 
+                                                    '<?= $row['kategori'] ?>', 
+                                                    '<?= $row['lokasi'] ?>',                                                     '<?= $row['stok'] ?>', 
+                                                    '<?= $row['kondisi'] ?>', 
+                                                    '<?= str_replace(['\n'], '<br>', addslashes($row['deskripsi'])) ?>', 
+                                                    '<?= $row['gambar'] ?>'
+                                                )" 
+                                                class="text-blue-600 hover:text-blue-800">
                                                 <i data-lucide="eye" class="w-4 h-4"></i>
                                             </button>
 
@@ -400,11 +400,7 @@ ORDER BY nama_lokasi
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl overflow-hidden">
             <div class="px-6 py-5 border-b flex justify-between items-center">
                 <h2 class="text-xl font-semibold">Tambah Barang Baru</h2>
-                <button onclick="closeModalBarang()">
-                    <i data-lucide="x" class="w-5 h-5 text-slate-500"></i>
-                </button>
             </div>
-
             <form action="barang_tambah.php" method="POST" enctype="multipart/form-data">
                 <div class="p-6">
                     <div class="grid md:grid-cols-2 gap-5">
@@ -412,12 +408,10 @@ ORDER BY nama_lokasi
                             <label class="text-sm font-medium block mb-2">Kode Barang</label>
                             <input type="text" name="kode_barang" required class="w-full border border-slate-200 rounded-lg px-4 py-3" placeholder="BRG-001">
                         </div>
-
                         <div>
                             <label class="text-sm font-medium block mb-2">Nama Barang</label>
                             <input type="text" name="nama_barang" required class="w-full border border-slate-200 rounded-lg px-4 py-3" placeholder="Nama Barang">
                         </div>
-
                         <div>
                             <label class="text-sm font-medium block mb-2">Kategori</label>
                             <select name="id_kategori" required class="w-full border border-slate-200 rounded-lg px-4 py-3">
@@ -430,7 +424,6 @@ ORDER BY nama_lokasi
                                 <?php } ?>
                             </select>
                         </div>
-
                         <div>
                             <label class="text-sm font-medium block mb-2">Lokasi</label>
                             <select name="id_lokasi" required class="w-full border border-slate-200 rounded-lg px-4 py-3">
@@ -443,7 +436,6 @@ ORDER BY nama_lokasi
                                 <?php } ?>
                             </select>
                         </div>
-
                         <div>
                             <label class="text-sm font-medium block mb-2">Laboratorium</label>
                             <select name="id_lab" required class="w-full border border-slate-200 rounded-lg px-4 py-3">
@@ -456,33 +448,28 @@ ORDER BY nama_lokasi
                                 <?php } ?>
                             </select>
                         </div>
-
                         <div>
                             <label class="text-sm font-medium block mb-2">Stok</label>
                             <input type="number" name="stok" required min="0" class="w-full border border-slate-200 rounded-lg px-4 py-3" placeholder="0">
                         </div>
-
                         <div>
                             <label class="text-sm font-medium block mb-2">Kondisi</label>
                             <select name="kondisi" required class="w-full border border-slate-200 rounded-lg px-4 py-3">
-                                <option value="Baik">Baik</option>
-                                <option value="Rusak Ringan">Rusak Ringan</option>
-                                <option value="Rusak Berat">Rusak Berat</option>
+                                <option value="baik">Baik</option>
+                                <option value="rusak ringan">Rusak Ringan</option>
+                                <option value="rusak berat">Rusak Berat</option>
                             </select>
                         </div>
-
                         <div>
                             <label class="text-sm font-medium block mb-2">Upload Gambar</label>
                             <input type="file" name="gambar" class="w-full border border-slate-200 rounded-lg px-4 py-3">
                         </div>
                     </div>
-
                     <div class="mt-5">
                         <label class="text-sm font-medium block mb-2">Keterangan</label>
                         <textarea name="deskripsi" rows="4" class="w-full border border-slate-200 rounded-lg px-4 py-3" placeholder="Keterangan tambahan..."></textarea>
                     </div>
                 </div>
-
                 <div class="border-t px-6 py-4 flex justify-end gap-3">
                     <button type="button" onclick="closeModalBarang()" class="px-6 py-3 border border-slate-200 rounded-lg">Batal</button>
                     <button type="submit" class="px-6 py-3 bg-[#1E3A8A] text-white rounded-lg">Simpan</button>
@@ -499,7 +486,6 @@ ORDER BY nama_lokasi
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
-
             <div class="p-6">
                 <div class="grid grid-cols-2 gap-6">
                     <div>
@@ -527,12 +513,10 @@ ORDER BY nama_lokasi
                         <h4 id="d_kondisi" class="font-semibold"></h4>
                     </div>
                 </div>
-
                 <div class="mt-6">
                     <p class="text-sm text-slate-500 mb-2">Deskripsi</p>
                     <p id="d_deskripsi" class="text-slate-700"></p>
                 </div>
-
                 <div class="mt-8">
                     <p class="text-sm text-slate-500 mb-2">Status Stok</p>
                     <span id="d_badge" class="px-3 py-1 rounded-full text-xs font-medium">Aman</span>
@@ -552,7 +536,6 @@ ORDER BY nama_lokasi
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
-
             <form action="barang_edit.php" method="POST">
                 <input type="hidden" name="id" id="e_id">
                 <div class="p-6">
@@ -606,18 +589,16 @@ ORDER BY nama_lokasi
                             <label class="block text-sm mb-2">Kondisi</label>
                             <select name="kondisi" id="e_kondisi" class="w-full border border-slate-200 rounded-lg px-4 py-3">
                                 <option value="baik">Baik</option>
-                                <option value="rusak_ringan">Rusak Ringan</option>
-                                <option value="rusak_berat">Rusak Berat</option>
+                                <option value="Rusak Ringan">Rusak Ringan</option>
+                                <option value="Rusak Berat">Rusak Berat</option>
                             </select>
                         </div>
                     </div>
-
                     <div class="mt-5">
                         <label class="block text-sm mb-2">Deskripsi</label>
                         <textarea name="deskripsi" id="e_deskripsi" rows="4" class="w-full border border-slate-200 rounded-lg px-4 py-3"></textarea>
                     </div>
                 </div>
-
                 <div class="border-t px-6 py-4 flex justify-end gap-3">
                     <button type="button" onclick="closeEditBarang()" class="px-6 py-3 border rounded-lg">Batal</button>
                     <button type="submit" class="px-6 py-3 bg-[#1E3A8A] text-white rounded-lg">Simpan</button>
@@ -634,7 +615,6 @@ ORDER BY nama_lokasi
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
-
             <div class="p-6">
                 <p class="text-slate-600">
                     Apakah Anda yakin ingin menghapus barang <strong id="hapusNamaBarang"></strong> ?
@@ -653,15 +633,12 @@ ORDER BY nama_lokasi
 
     <script>
         lucide.createIcons();
-
         function openModalBarang() {
             document.getElementById('modalBarang').classList.remove('hidden');
         }
-
         function closeModalBarang() {
             document.getElementById('modalBarang').classList.add('hidden');
         }
-
         function openDetailBarang(kode, nama, kategori, lokasi, stok, kondisi, deskripsi) {
             document.getElementById('d_kode').innerText = kode;
             document.getElementById('d_nama').innerText = nama;
@@ -670,10 +647,8 @@ ORDER BY nama_lokasi
             document.getElementById('d_stok').innerText = stok;
             document.getElementById('d_kondisi').innerText = kondisi;
             document.getElementById('d_deskripsi').innerText = deskripsi;
-
             let badge = document.getElementById('d_badge');
             let progress = document.getElementById('d_progress');
-
             if (stok <= 0) {
                 badge.innerHTML = 'Stok Habis';
                 badge.className = 'px-3 py-1 rounded-full text-xs bg-red-100 text-red-600';
@@ -690,15 +665,12 @@ ORDER BY nama_lokasi
                 progress.style.width = '70%';
                 progress.className = 'bg-green-500 h-3 rounded-full';
             }
-
             document.getElementById('modalDetail').classList.remove('hidden');
             lucide.createIcons();
         }
-
         function closeDetailBarang() {
             document.getElementById('modalDetail').classList.add('hidden');
         }
-
         function openEditBarang(id, kode, nama, kategori, lokasi, lab, stok, kondisi, deskripsi) {
             document.getElementById('e_id').value = id;
             document.getElementById('e_kode').value = kode;
@@ -709,24 +681,21 @@ ORDER BY nama_lokasi
             document.getElementById('e_stok').value = stok;
             document.getElementById('e_kondisi').value = kondisi;
             document.getElementById('e_deskripsi').value = deskripsi;
-
             document.getElementById('modalEdit').classList.remove('hidden');
         }
-
         function closeEditBarang() {
             document.getElementById('modalEdit').classList.add('hidden');
         }
-
         function openHapusBarang(id, nama) {
             document.getElementById('hapusIdBarang').value = id;
             document.getElementById('hapusNamaBarang').innerHTML = nama;
             document.getElementById('modalHapus').classList.remove('hidden');
         }
-
         function closeHapusBarang() {
             document.getElementById('modalHapus').classList.add('hidden');
         }
     </script>
+    <script src="script.js"></script>
 </body>
 
 </html>
